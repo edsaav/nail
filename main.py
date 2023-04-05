@@ -2,6 +2,7 @@ import click
 from tools.build.build_file import build_file
 from tools.modify.modify_file import modify_file
 from tools.debug.debug_file import debug_file
+from tools.spec.build_spec_file import build_spec_file
 
 
 @click.group()
@@ -38,6 +39,16 @@ def debug(file, error):
     if error:
         click.echo(f"Error message: {error}")
     debug_file(file, error)
+
+
+@main.command()
+@click.argument("file")
+@click.argument("target_path")
+def spec(file, target_path):
+    """Build a unit test file for an existing file."""
+    click.echo(f"Building spec file for: {file}")
+    click.echo(f"Target path: {target_path}")
+    build_spec_file(file, target_path)
 
 
 if __name__ == "__main__":

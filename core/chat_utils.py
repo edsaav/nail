@@ -10,6 +10,7 @@ You obey the following rules:
 - You do not include usage examples."""
 
 DEFAULT_TEMPERATURE = 0.3
+DEFAUKT_MAX_TOKENS = 2048
 
 
 def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE):
@@ -22,6 +23,7 @@ def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE):
         model="gpt-4",
         messages=messages,
         temperature=DEFAULT_TEMPERATURE,
+        max_tokens=DEFAUKT_MAX_TOKENS,
     )
 
     return response.choices[0].message["content"]
@@ -33,6 +35,7 @@ def predict_code(prompt):
     return extract_code(prediction)
 
 
+# TODO: Fix this to handle nested code blocks. Currently causing a bug whenever triple backticks are used in the code.
 def extract_code(text):
     # Regular expression pattern to detect code wrapped with triple backticks and optional language identifier
     pattern = r"```(?:\w+\n)?([\s\S]*?)\n?```"
