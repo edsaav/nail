@@ -1,5 +1,5 @@
-from core.file_utils import read_file, write_file
-from core.chat_utils import predict_code
+from app.core.file_utils import read_file, write_file
+from app.core.chat_utils import predict_code
 
 REQUEST_SUFFIX = "Return the full modified file contents. Any non-code text should only be included as inline comments."
 

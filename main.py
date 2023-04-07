@@ -1,8 +1,8 @@
 import click
-from tools.build.build_file import build_file
-from tools.modify.modify_file import modify_file
-from tools.debug.debug_file import debug_file
-from tools.spec.build_spec_file import build_spec_file
+from app.tools.build.build_file import build_file
+from app.tools.modify.modify_file import modify_file
+from app.tools.debug.debug_file import debug_file
+from app.tools.spec.build_spec_file import build_spec_file
 
 
 @click.group()
