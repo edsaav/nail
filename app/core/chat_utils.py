@@ -37,7 +37,7 @@ def predict_code(prompt):
 def extract_code(text):
     # Regular expression pattern to detect code wrapped with triple backticks and optional language identifier
     pattern = r"^```(?:\w+)?\n([\s\S]*?)\n```"
-    matches = re.findall(pattern, text)
+    matches = re.findall(pattern, text, re.MULTILINE)
 
     # Return only the first found match, considering there is only one code block
     return matches[0] if matches else ""
