@@ -12,7 +12,7 @@ def main():
 
 @main.command()
 @click.argument("file")
-@click.option("--context-files", multiple=True, type=str, help="Optional list of context file paths.")
+@click.option("--context-files", "-c", multiple=True, type=str, help="Optional list of context file paths.")
 def build(file, context_files):
     """Build a new file with optional context files."""
     click.echo(f"Building a new file: {file}")
@@ -23,7 +23,7 @@ def build(file, context_files):
 
 @main.command()
 @click.argument("file")
-@click.option("--request", prompt="Requested change", help="The modification that you are requesting.")
+@click.option("--request", "-r", prompt="Requested change", help="The modification that you are requesting.")
 def modify(file, request):
     """Modify an existing file."""
     click.echo(f"Modifying file: {file}")
@@ -32,7 +32,7 @@ def modify(file, request):
 
 @main.command()
 @click.argument("file")
-@click.option("--error", default=None, prompt=False, help="Optional error message to debug.")
+@click.option("--error", "-e", default=None, prompt=False, help="Optional error message to debug.")
 def debug(file, error):
     """Debug an existing file. May include an optional error message"""
     click.echo(f"Debugging file: {file}")
