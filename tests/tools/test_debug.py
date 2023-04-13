@@ -22,30 +22,29 @@ predict_code_patch = patch(
 
 
 @pytest.mark.parametrize("error_message", [TEST_ERROR_MESSAGE, None])
+@patch("app.tools.debug.debug_file.write_file", write_file_mock)
+@patch("app.tools.debug.debug_file.read_file", read_file_mock)
+@patch("app.tools.debug.debug_file.predict_code", predict_code_mock)
 def test_debug_file(error_message):
     write_file_mock.reset_mock()
     read_file_mock.reset_mock()
     predict_code_mock.reset_mock()
 
-    with read_file_patch, write_file_patch, predict_code_patch:
-        debug_file(TEST_FILE_PATH, error_message)
+    expected_request = (
+        f"Fix the following error message: {TEST_ERROR_MESSAGE}"
+        if error_message
+        else "Fix any bugs in the file."
+    )
+    expected_prompt = (
+        f"Original file contents:\n```\n{TEST_FILE_CONTENT}\n```\n\n"
+        f"{expected_request}\n"
+        "Return the full modified file contents. Any non-code text should only be included as inline comments."
+    )
 
-        # Assert read_file is called with the correct file path
-        read_file_mock.assert_called_once_with(TEST_FILE_PATH)
+    debug_file(TEST_FILE_PATH, error_message)
 
-        # Assert predict_code is called with the correct prompt
-        expected_request = (
-            f"Fix the following error message: {TEST_ERROR_MESSAGE}"
-            if error_message
-            else "Fix any bugs in the file."
-        )
-        expected_prompt = (
-            f"Original file contents:\n```\n{TEST_FILE_CONTENT}\n```\n\n"
-            f"{expected_request}\n"
-            "Return the full modified file contents. Any non-code text should only be included as inline comments."
-        )
-        predict_code_mock.assert_called_once_with(expected_prompt)
-
-        # Assert write_file is called with the correct file path and modified contents
-        write_file_mock.assert_called_once_with(
-            TEST_FILE_PATH, TEST_MODIFIED_CONTENT)
+    # Assertions
+    read_file_mock.assert_called_once_with(TEST_FILE_PATH)
+    predict_code_mock.assert_called_once_with(expected_prompt)
+    write_file_mock.assert_called_once_with(
+        TEST_FILE_PATH, TEST_MODIFIED_CONTENT)
