@@ -1,4 +1,3 @@
-import re
 import openai
 import pytest
 from unittest.mock import MagicMock
