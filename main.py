@@ -24,10 +24,13 @@ def build(file, context_files):
 @main.command()
 @click.argument("file")
 @click.option("--request", "-r", prompt="Requested change", help="The modification that you are requesting.")
-def modify(file, request):
+@click.option("--context-files", "-c", multiple=True, type=str, help="Optional list of context file paths.")
+def modify(file, request, context_files):
     """Modify an existing file."""
     click.echo(f"Modifying file: {file}")
-    modify_file(file, request)
+    if context_files:
+        click.echo(f"Using context files: {', '.join(context_files)}")
+    modify_file(file, request, context_files)
 
 
 @main.command()
