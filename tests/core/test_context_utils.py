@@ -1,5 +1,11 @@
 from unittest.mock import patch
-from app.core.context_utils import build_context_prefix, format_file_label, format_file_block
+from app.core.context_utils import (
+    build_context_prefix,
+    format_file_label,
+    format_file_block,
+    list_all_files,
+    build_context_prefix_from_directory,
+)
 
 # Test data
 test_file_path = "test_file.txt"
@@ -27,3 +33,28 @@ def test_build_context_prefix_with_files(mock_format_file_block, mock_read_file)
     context_file_paths = [test_file_path]
     expected_output = "Existing files for context:\n\nThis is a test file.Given the above context, draft a new file using the following request:\n\n"
     assert build_context_prefix(context_file_paths) == expected_output
+
+
+@patch("os.walk")
+def test_list_all_files(mock_os_walk):
+    # Mock the os.walk generator to return a single file
+    mock_os_walk.return_value = [("root", [], ["test_file.txt"])]
+
+    file_paths = list_all_files()
+    assert len(file_paths) == 1
+    assert file_paths[0] == "root/test_file.txt"
+
+
+@patch("app.core.context_utils.list_all_files")
+@patch("app.core.context_utils.build_context_prefix")
+def test_build_context_prefix_from_directory(mock_build_context_prefix, mock_list_all_files):
+    # Mock list_all_files to return a single file path
+    mock_list_all_files.return_value = [test_file_path]
+
+    # Mock build_context_prefix to return a string
+    mock_build_context_prefix.return_value = "Mocked context prefix"
+
+    context_prefix = build_context_prefix_from_directory()
+    mock_list_all_files.assert_called_once()
+    mock_build_context_prefix.assert_called_once_with([test_file_path])
+    assert context_prefix == "Mocked context prefix"
