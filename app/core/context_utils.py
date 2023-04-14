@@ -34,7 +34,7 @@ def format_file_block(context_file_path, context_content):
 def list_all_files(path=None):
     """
     Recursively list all file paths within the given directory, including files
-    nested within sub-directories.
+    nested within sub-directories, ignoring files or directories with names starting with a period.
 
     :param path: Optional path to the directory. If not provided, uses the current path.
     :return: List of strings containing file paths within the directory.
@@ -44,9 +44,14 @@ def list_all_files(path=None):
 
     file_paths = []
 
-    for root, _, files in os.walk(path):
+    for root, dirs, files in os.walk(path):
+        # Ignore directories starting with a period
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        
         for file in files:
-            file_paths.append(os.path.join(root, file))
+            # Ignore files starting with a period
+            if not file.startswith('.'):
+                file_paths.append(os.path.join(root, file))
 
     return file_paths
 
