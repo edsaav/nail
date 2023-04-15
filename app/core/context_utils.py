@@ -31,33 +31,45 @@ def format_file_block(context_file_path, context_content):
     return f"{format_file_label(context_file_path)}\n```\n{context_content}\n```\n\n"
 
 
-def list_all_files(path=None):
+def list_all_files(path=None, ignore_list=None):
     """
     Recursively list all file paths within the given directory, including files
-    nested within sub-directories.
+    nested within sub-directories, ignoring files or directories with names starting with a period
+    or matching any names in the ignore_list.
 
     :param path: Optional path to the directory. If not provided, uses the current path.
+    :param ignore_list: Optional list of strings containing names to ignore.
     :return: List of strings containing file paths within the directory.
     """
     if path is None:
         path = os.getcwd()
 
+    if ignore_list is None:
+        ignore_list = []
+
     file_paths = []
 
-    for root, _, files in os.walk(path):
+    for root, dirs, files in os.walk(path):
+        # Ignore directories starting with a period or in the ignore_list
+        dirs[:] = [d for d in dirs if not d.startswith(
+            '.') and d not in ignore_list]
+
         for file in files:
-            file_paths.append(os.path.join(root, file))
+            # Ignore files starting with a period or in the ignore_list
+            if not file.startswith('.') and file not in ignore_list:
+                file_paths.append(os.path.join(root, file))
 
     return file_paths
 
 
-def build_context_prefix_from_directory(path=None):
+def build_context_prefix_from_directory(path=None, ignore_list=None):
     """
     Build the context prefix string based on all the files in the specified (or current) directory.
 
     :param path: Optional path to the directory. If not provided, uses the current path.
+    :param ignore_list: Optional list of strings containing names to ignore.
     :return: context_prefix: String containing the context prefix
     """
-    context_file_paths = list_all_files(path)
+    context_file_paths = list_all_files(path, ignore_list)
     context_prefix = build_context_prefix(context_file_paths)
     return context_prefix

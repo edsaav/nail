@@ -1,5 +1,6 @@
 import click
 from app.tools.build.build_file import build_file
+from app.tools.build.build_readme import generate_readme
 from app.tools.modify.modify_file import modify_file
 from app.tools.debug.debug_file import debug_file
 from app.tools.spec.build_spec_file import build_spec_file
@@ -19,6 +20,13 @@ def build(file, context_files):
     if context_files:
         click.echo(f"Using context files: {', '.join(context_files)}")
     build_file(file, context_files)
+
+
+@main.command()
+def readme():
+    """Build a new README file based on the currect directory."""
+    click.echo("Generating README file.")
+    generate_readme("README.md")
 
 
 @main.command()
