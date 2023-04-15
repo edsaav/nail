@@ -45,6 +45,6 @@ def test_debug_file(error_message):
 
     # Assertions
     read_file_mock.assert_called_once_with(TEST_FILE_PATH)
-    predict_code_mock.assert_called_once_with(expected_prompt)
+    predict_code_mock.assert_called_once_with(expected_prompt, model=None)
     write_file_mock.assert_called_once_with(
         TEST_FILE_PATH, TEST_MODIFIED_CONTENT)

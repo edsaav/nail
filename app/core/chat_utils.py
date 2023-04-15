@@ -20,6 +20,8 @@ SUPPORTED_MODELS = [
 
 
 def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE, model=DEFAULT_MODEL):
+    if model == None:
+        model = DEFAULT_MODEL
     if model not in SUPPORTED_MODELS:
         raise ValueError("Unsupported LLM model requested.")
 
