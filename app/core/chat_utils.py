@@ -1,5 +1,8 @@
 import re
+import os
 import openai
+import configparser
+from pathlib import Path
 
 DEFAULT_SYSTEM_MESSAGE = "You are a helpful assistant."
 CODE_SYSTEM_MESSAGE = """You are a code generating assistant.
@@ -19,11 +22,28 @@ SUPPORTED_MODELS = [
 ]
 
 
+CONFIG_FILE = Path.home() / ".skinkrc"
+
+
+def get_api_key():
+    if "OPENAI_API_KEY" in os.environ:
+        return os.environ["OPENAI_API_KEY"]
+
+    if CONFIG_FILE.is_file():
+        config = configparser.ConfigParser()
+        config.read(CONFIG_FILE)
+        if "openai" in config and "api_key" in config["openai"]:
+            return config["openai"]["api_key"]
+
+    return None
+
+
 def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE, model=DEFAULT_MODEL):
     if model == None:
         model = DEFAULT_MODEL
     if model not in SUPPORTED_MODELS:
         raise ValueError("Unsupported LLM model requested.")
+    openai.api_key = get_api_key()
 
     messages = [
         system_message(system_message_content),
