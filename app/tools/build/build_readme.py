@@ -4,6 +4,8 @@ from app.core.context_utils import build_context_prefix_from_directory
 
 README_SYSTEM_MESSAGE = "You are a README generating assistant."
 README_REQUEST = "Generate a README file for the application."
+# TODO: Make this list configurable
+IGNORE_LIST = ["README.md", "LICENSE", "tests", "test", "specs"]
 
 
 def generate_readme(readme_file_path, context_directory_path=None):
@@ -17,7 +19,7 @@ def generate_readme(readme_file_path, context_directory_path=None):
                                     If not provided, uses the current path.
     """
     context_prefix = build_context_prefix_from_directory(
-        context_directory_path)
+        context_directory_path, ignore_list=IGNORE_LIST)
     prompt = f"{context_prefix}{README_REQUEST}"
     readme_contents = predict(
         prompt, system_message_content=README_SYSTEM_MESSAGE)

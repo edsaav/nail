@@ -1,6 +1,6 @@
 import os
 from unittest.mock import patch
-from app.tools.build.build_readme import generate_readme, README_REQUEST, README_SYSTEM_MESSAGE
+from app.tools.build.build_readme import generate_readme, README_REQUEST, README_SYSTEM_MESSAGE, IGNORE_LIST
 
 # Test data
 TEST_CONTEXT_DIRECTORY = "test_directory"
@@ -23,7 +23,7 @@ def test_generate_readme(mock_write_file, mock_predict, mock_build_context):
     generate_readme(readme_file_path, TEST_CONTEXT_DIRECTORY)
 
     # Check if the build_context_prefix_from_directory function was called with the correct arguments
-    mock_build_context.assert_called_once_with(TEST_CONTEXT_DIRECTORY)
+    mock_build_context.assert_called_once_with(TEST_CONTEXT_DIRECTORY, ignore_list=IGNORE_LIST)
 
     # Check if the predict function was called with the correct arguments
     expected_prompt = f"{TEST_CONTEXT_DIRECTORY}{README_REQUEST}"
