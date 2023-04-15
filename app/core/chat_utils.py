@@ -13,14 +13,22 @@ DEFAULT_TEMPERATURE = 0.3
 DEFAULT_MAX_TOKENS = 2048
 DEFAULT_MODEL = "gpt-3.5-turbo"
 
+SUPPORTED_MODELS = [
+    "gpt-3.5-turbo",
+    "gpt-4",
+]
 
-def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE):
+
+def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE, model=DEFAULT_MODEL):
+    if model not in SUPPORTED_MODELS:
+        raise ValueError("Unsupported LLM model requested.")
+
     messages = [
         system_message(system_message_content),
         user_message(prompt)
     ]
     response = openai.ChatCompletion.create(
-        model=DEFAULT_MODEL,
+        model=model,
         messages=messages,
         temperature=DEFAULT_TEMPERATURE,
         max_tokens=DEFAULT_MAX_TOKENS,
@@ -29,8 +37,9 @@ def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE):
     return response.choices[0].message["content"]
 
 
-def predict_code(prompt):
-    prediction = predict(prompt, system_message_content=CODE_SYSTEM_MESSAGE)
+def predict_code(prompt, model=DEFAULT_MODEL):
+    prediction = predict(
+        prompt, system_message_content=CODE_SYSTEM_MESSAGE, model=model)
 
     return extract_code(prediction)
 

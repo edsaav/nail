@@ -11,7 +11,7 @@ from app.core.chat_utils import (
     CODE_SYSTEM_MESSAGE,
     DEFAULT_TEMPERATURE,
     DEFAULT_MAX_TOKENS,
-    DEFAULT_MODEL
+    DEFAULT_MODEL,
 )
 
 # Set up the openai API mock
@@ -41,6 +41,30 @@ def test_predict():
     )
 
 
+def test_predict_with_model():
+    prompt = "What is the meaning of life?"
+    model = "gpt-4"
+    response = predict(prompt, model=model)
+
+    assert response == "Test response"
+    openai.ChatCompletion.create.assert_called_once_with(
+        model=model,
+        messages=[
+            system_message(DEFAULT_SYSTEM_MESSAGE),
+            user_message(prompt)
+        ],
+        temperature=DEFAULT_TEMPERATURE,
+        max_tokens=DEFAULT_MAX_TOKENS,
+    )
+
+
+def test_predict_with_invalid_model():
+    prompt = "What is the meaning of life?"
+    model = "invalid_model"
+    with pytest.raises(ValueError):
+        response = predict(prompt, model=model)
+
+
 def test_predict_code():
     prompt = "Write a Python function that adds two numbers."
     response = predict_code(prompt)
@@ -55,6 +79,30 @@ def test_predict_code():
         temperature=DEFAULT_TEMPERATURE,
         max_tokens=DEFAULT_MAX_TOKENS,
     )
+
+
+def test_predict_code_with_model():
+    prompt = "Write a Python function that adds two numbers."
+    model = "gpt-4"
+    response = predict_code(prompt, model=model)
+
+    assert response == ""
+    openai.ChatCompletion.create.assert_called_once_with(
+        model=model,
+        messages=[
+            system_message(CODE_SYSTEM_MESSAGE),
+            user_message(prompt)
+        ],
+        temperature=DEFAULT_TEMPERATURE,
+        max_tokens=DEFAULT_MAX_TOKENS,
+    )
+
+
+def test_predict_code_with_invalid_model():
+    prompt = "Write a Python function that adds two numbers."
+    model = "invalid_model"
+    with pytest.raises(ValueError):
+        response = predict_code(prompt, model=model)
 
 
 def test_extract_code():
