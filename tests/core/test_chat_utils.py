@@ -10,7 +10,8 @@ from app.core.chat_utils import (
     DEFAULT_SYSTEM_MESSAGE,
     CODE_SYSTEM_MESSAGE,
     DEFAULT_TEMPERATURE,
-    DEFAULT_MAX_TOKENS
+    DEFAULT_MAX_TOKENS,
+    DEFAULT_MODEL
 )
 
 # Set up the openai API mock
@@ -30,7 +31,7 @@ def test_predict():
 
     assert response == "Test response"
     openai.ChatCompletion.create.assert_called_once_with(
-        model="gpt-4",
+        model=DEFAULT_MODEL,
         messages=[
             system_message(DEFAULT_SYSTEM_MESSAGE),
             user_message(prompt)
@@ -46,7 +47,7 @@ def test_predict_code():
 
     assert response == ""
     openai.ChatCompletion.create.assert_called_once_with(
-        model="gpt-4",
+        model=DEFAULT_MODEL,
         messages=[
             system_message(CODE_SYSTEM_MESSAGE),
             user_message(prompt)

@@ -11,6 +11,7 @@ You obey the following rules:
 
 DEFAULT_TEMPERATURE = 0.3
 DEFAULT_MAX_TOKENS = 2048
+DEFAULT_MODEL = "gpt-3.5-turbo"
 
 
 def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE):
@@ -19,7 +20,7 @@ def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE):
         user_message(prompt)
     ]
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model=DEFAULT_MODEL,
         messages=messages,
         temperature=DEFAULT_TEMPERATURE,
         max_tokens=DEFAULT_MAX_TOKENS,
