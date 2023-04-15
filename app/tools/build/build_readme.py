@@ -8,7 +8,7 @@ README_REQUEST = "Generate a README file for the application."
 IGNORE_LIST = ["README.md", "LICENSE", "tests", "test", "specs"]
 
 
-def generate_readme(readme_file_path, context_directory_path=None):
+def build_readme(readme_file_path, context_directory_path=None, model=None):
     """
     Gathers context from all files in the current directory, builds a prompt for OpenAI to generate
     a README file for the application, calls the predict_readme method, and writes the generated file
@@ -22,5 +22,5 @@ def generate_readme(readme_file_path, context_directory_path=None):
         context_directory_path, ignore_list=IGNORE_LIST)
     prompt = f"{context_prefix}{README_REQUEST}"
     readme_contents = predict(
-        prompt, system_message_content=README_SYSTEM_MESSAGE)
+        prompt, system_message_content=README_SYSTEM_MESSAGE, model=model)
     write_file(readme_file_path, readme_contents)
