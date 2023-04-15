@@ -4,6 +4,7 @@ from app.tools.build.build_readme import build_readme, README_REQUEST, README_SY
 
 # Test data
 TEST_CONTEXT_DIRECTORY = "test_directory"
+TEST_CONTEXT = "This is the content of the app files."
 TEST_README_FILE = "README.md"
 TEST_README_CONTENTS = "This is a generated README file."
 
@@ -16,18 +17,17 @@ def test_build_readme(mock_write_file, mock_predict, mock_build_context):
     readme_file_path = os.path.join(TEST_CONTEXT_DIRECTORY, TEST_README_FILE)
 
     # Set the return values for the mocked functions
-    mock_build_context.return_value = TEST_CONTEXT_DIRECTORY
+    mock_build_context.return_value = TEST_CONTEXT
     mock_predict.return_value = TEST_README_CONTENTS
 
     # Call the build_readme function
-    build_readme(readme_file_path, TEST_CONTEXT_DIRECTORY)
+    build_readme(readme_file_path)
 
     # Check if the build_context_prefix_from_directory function was called with the correct arguments
-    mock_build_context.assert_called_once_with(
-        TEST_CONTEXT_DIRECTORY, ignore_list=IGNORE_LIST)
+    mock_build_context.assert_called_once_with(ignore_list=IGNORE_LIST)
 
     # Check if the predict function was called with the correct arguments
-    expected_prompt = f"{TEST_CONTEXT_DIRECTORY}{README_REQUEST}"
+    expected_prompt = f"{TEST_CONTEXT}{README_REQUEST}"
     mock_predict.assert_called_once_with(
         expected_prompt, system_message_content=README_SYSTEM_MESSAGE, model=None)
 
