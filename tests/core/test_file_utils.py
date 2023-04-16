@@ -1,7 +1,8 @@
 import os
 import tempfile
 import pytest
-from app.core.file_utils import read_file, write_file
+from unittest.mock import patch
+from app.core.file_utils import read_file, write_file, open_editor
 
 
 def test_read_file():
@@ -33,6 +34,27 @@ def test_write_file():
 
     # Clean up the temporary file
     os.remove(temp_file_path)
+
+
+@patch("subprocess.call")
+def test_open_editor_default(mock_call):
+    file_path = "test.txt"
+    open_editor(file_path)
+    mock_call.assert_called_once_with(["vim", file_path])
+
+
+@patch("subprocess.call")
+def test_open_editor_with_custom_editor(mock_call):
+    # Test with updated EDITOR var
+    old_environ = os.environ.copy()
+    try:
+        os.environ["EDITOR"] = "nano"
+        file_path = "test.txt"
+        open_editor(file_path)
+        mock_call.assert_called_once_with(["nano", file_path])
+    finally:
+        os.environ.clear()
+        os.environ.update(old_environ)
 
 
 if __name__ == "__main__":

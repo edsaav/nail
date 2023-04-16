@@ -34,7 +34,7 @@ To build a new file with optional context files, use the `build` command:
 skink build <file> [--context-files <file1> <file2> ...] [--model <model>]
 ```
 
-The target file should already exist and should contain a description of the file that you are trying to build. The more specific the specification, the more accurate the result. As an example:
+The target file should contain a description of the file that you are trying to build. The more specific the specification, the more accurate the result. As an example:
 
 ```
 A python script with a function that does the following:
@@ -43,6 +43,8 @@ A python script with a function that does the following:
 - scrapes the specified page for heading tags
 - returns an array of resulting headings
 ```
+
+If the file does not exist, skink will open your default editor to fill in the prompt in-line.
 
 The `--context-files` (or `-c`) option can be used to pass in one or more additional files that could provide useful reference. For example, you can pass in files containing modules that should be imported and used by the new file that is being built.
 

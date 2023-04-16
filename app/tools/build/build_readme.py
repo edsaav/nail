@@ -5,7 +5,7 @@ from app.core.context_utils import build_context_prefix_from_directory
 README_SYSTEM_MESSAGE = "You are a README generating assistant."
 README_REQUEST = "Generate a README file for the application."
 # TODO: Make this list configurable
-IGNORE_LIST = ["README.md", "LICENSE", "tests", "test", "specs"]
+IGNORE_LIST = ["README.md", "LICENSE", "tests", "test", "specs", "__pycache__", "skink.egg-info"]
 
 
 def build_readme(readme_file_path, model=None):
