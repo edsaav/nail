@@ -1,8 +1,6 @@
 import re
-import os
 import openai
-import configparser
-from pathlib import Path
+from app.core.config_utils import get_api_key
 
 DEFAULT_SYSTEM_MESSAGE = "You are a helpful assistant."
 CODE_SYSTEM_MESSAGE = """You are a code generating assistant.
@@ -20,22 +18,6 @@ SUPPORTED_MODELS = [
     "gpt-3.5-turbo",
     "gpt-4",
 ]
-
-
-CONFIG_FILE = Path.home() / ".skinkrc"
-
-
-def get_api_key():
-    if "OPENAI_API_KEY" in os.environ:
-        return os.environ["OPENAI_API_KEY"]
-
-    if CONFIG_FILE.is_file():
-        config = configparser.ConfigParser()
-        config.read(CONFIG_FILE)
-        if "openai" in config and "api_key" in config["openai"]:
-            return config["openai"]["api_key"]
-
-    return None
 
 
 def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE, model=DEFAULT_MODEL):

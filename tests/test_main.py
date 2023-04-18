@@ -1,4 +1,3 @@
-import configparser
 from unittest.mock import patch, ANY
 import pytest
 from click.testing import CliRunner
@@ -9,17 +8,6 @@ from main import configure, build, readme, modify, debug, spec, save_api_key
 @pytest.fixture
 def runner():
     return CliRunner()
-
-
-def test_save_api_key(tmp_path):
-    api_key = "test_api_key"
-    temp_config_file = tmp_path / ".skinkrc"
-
-    with patch("main.CONFIG_FILE", temp_config_file):
-        save_api_key(api_key)
-        config = configparser.ConfigParser()
-        config.read(temp_config_file)
-        assert config["openai"]["api_key"] == api_key
 
 
 def test_configure(runner):
