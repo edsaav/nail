@@ -1,29 +1,12 @@
 import click
-import configparser
-from pathlib import Path
 from app.tools.build.build_file import build_file
 from app.tools.build.build_readme import build_readme
 from app.tools.modify.modify_file import modify_file
 from app.tools.debug.debug_file import debug_file
 from app.tools.spec.build_spec_file import build_spec_file
+from app.core.config_utils import save_api_key
 
 MODEL_HELP = "Optionally specify an LLM model. Currently defaults to gpt-3.5-turbo and supports gpt-4."
-
-CONFIG_FILE = Path.home() / ".skinkrc"
-
-
-def save_api_key(api_key):
-    config = configparser.ConfigParser()
-    if CONFIG_FILE.is_file():
-        config.read(CONFIG_FILE)
-
-    if "openai" not in config:
-        config["openai"] = {}
-
-    config["openai"]["api_key"] = api_key
-
-    with CONFIG_FILE.open("w") as config_file:
-        config.write(config_file)
 
 
 @click.group()
