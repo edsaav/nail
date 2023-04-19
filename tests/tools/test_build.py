@@ -10,8 +10,8 @@ def mock_read_file():
 
 
 @pytest.fixture
-def mock_write_file():
-    with patch("app.tools.build.build_file.write_file", autospec=True) as mock:
+def mock_apply_changes():
+    with patch("app.tools.build.build_file.apply_changes", autospec=True) as mock:
         yield mock
 
 
@@ -28,7 +28,7 @@ def mock_build_context_prefix():
 
 
 def test_build_file_no_context(
-    mock_read_file, mock_write_file, mock_predict_code, mock_build_context_prefix
+    mock_read_file, mock_apply_changes, mock_predict_code, mock_build_context_prefix
 ):
     file_path = "test_file_path"
     mock_read_file.return_value = "prompt"
@@ -41,11 +41,11 @@ def test_build_file_no_context(
     mock_read_file.assert_called_once_with(file_path)
     mock_build_context_prefix.assert_called_once_with(None)
     mock_predict_code.assert_called_once_with("prompt", model=None)
-    mock_write_file.assert_called_once_with(file_path, "draft_contents")
+    mock_apply_changes.assert_called_once_with(file_path, "draft_contents")
 
 
 def test_build_file_with_context(
-    mock_read_file, mock_write_file, mock_predict_code, mock_build_context_prefix
+    mock_read_file, mock_apply_changes, mock_predict_code, mock_build_context_prefix
 ):
     file_path = "test_file_path"
     context_file_paths = ["context1", "context2"]
@@ -60,11 +60,11 @@ def test_build_file_with_context(
     mock_build_context_prefix.assert_called_once_with(context_file_paths)
     mock_predict_code.assert_called_once_with(
         "context_prefixprompt", model=None)
-    mock_write_file.assert_called_once_with(file_path, "draft_contents")
+    mock_apply_changes.assert_called_once_with(file_path, "draft_contents")
 
 
 def test_build_file_with_model(
-    mock_read_file, mock_write_file, mock_predict_code, mock_build_context_prefix
+    mock_read_file, mock_apply_changes, mock_predict_code, mock_build_context_prefix
 ):
     file_path = "test_file_path"
     context_file_paths = ["context1", "context2"]
@@ -79,4 +79,4 @@ def test_build_file_with_model(
     mock_build_context_prefix.assert_called_once_with(context_file_paths)
     mock_predict_code.assert_called_once_with(
         "context_prefixprompt", model="gpt-4")
-    mock_write_file.assert_called_once_with(file_path, "draft_contents")
+    mock_apply_changes.assert_called_once_with(file_path, "draft_contents")

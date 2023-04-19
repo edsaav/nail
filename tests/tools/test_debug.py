@@ -10,16 +10,16 @@ TEST_MODIFIED_CONTENT = "def test_function():\n    return 43\n"
 
 # Mock functions
 read_file_mock = MagicMock(return_value=TEST_FILE_CONTENT)
-write_file_mock = MagicMock()
+apply_changes_mock = MagicMock()
 predict_code_mock = MagicMock(return_value=TEST_MODIFIED_CONTENT)
 
 
 @pytest.mark.parametrize("error_message", [TEST_ERROR_MESSAGE, None])
-@patch("app.tools.debug.debug_file.write_file", write_file_mock)
+@patch("app.tools.debug.debug_file.apply_changes", apply_changes_mock)
 @patch("app.tools.debug.debug_file.read_file", read_file_mock)
 @patch("app.tools.debug.debug_file.predict_code", predict_code_mock)
 def test_debug_file(error_message):
-    write_file_mock.reset_mock()
+    apply_changes_mock.reset_mock()
     read_file_mock.reset_mock()
     predict_code_mock.reset_mock()
 
@@ -39,5 +39,5 @@ def test_debug_file(error_message):
     # Assertions
     read_file_mock.assert_called_once_with(TEST_FILE_PATH)
     predict_code_mock.assert_called_once_with(expected_prompt, model=None)
-    write_file_mock.assert_called_once_with(
+    apply_changes_mock.assert_called_once_with(
         TEST_FILE_PATH, TEST_MODIFIED_CONTENT)

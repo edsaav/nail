@@ -2,11 +2,11 @@ from unittest.mock import patch, ANY
 from app.tools.modify.modify_file import modify_file
 
 
-@patch("app.tools.modify.modify_file.write_file")
+@patch("app.tools.modify.modify_file.apply_changes")
 @patch("app.tools.modify.modify_file.read_file")
 @patch("app.tools.modify.modify_file.predict_code")
 @patch("app.tools.modify.modify_file.build_context_prefix")
-def test_modify_file_with_optional_context_files(mock_build_context_prefix, mock_predict_code, mock_read_file, mock_write_file):
+def test_modify_file_with_optional_context_files(mock_build_context_prefix, mock_predict_code, mock_read_file, mock_apply_changes):
     mock_file_content = "This is the original file content."
     mock_request = "Please add a new line at the end."
     mock_modified_content = "This is the modified file content."
@@ -24,14 +24,14 @@ def test_modify_file_with_optional_context_files(mock_build_context_prefix, mock
     mock_read_file.assert_called_once_with("dummy_file_path")
     mock_build_context_prefix.assert_called_once_with(mock_context_file_paths)
     mock_predict_code.assert_called_once()
-    mock_write_file.assert_called_once_with(
+    mock_apply_changes.assert_called_once_with(
         "dummy_file_path", mock_modified_content)
 
 
-@patch("app.tools.modify.modify_file.write_file")
+@patch("app.tools.modify.modify_file.apply_changes")
 @patch("app.tools.modify.modify_file.read_file")
 @patch("app.tools.modify.modify_file.predict_code")
-def test_modify_file_without_context_files(mock_predict_code, mock_read_file, mock_write_file):
+def test_modify_file_without_context_files(mock_predict_code, mock_read_file, mock_apply_changes):
     mock_file_content = "This is the original file content."
     mock_request = "Please add a new line at the end."
     mock_modified_content = "This is the modified file content."
@@ -44,14 +44,14 @@ def test_modify_file_without_context_files(mock_predict_code, mock_read_file, mo
     # Assertions
     mock_read_file.assert_called_once_with("dummy_file_path")
     mock_predict_code.assert_called_once()
-    mock_write_file.assert_called_once_with(
+    mock_apply_changes.assert_called_once_with(
         "dummy_file_path", mock_modified_content)
 
 
-@patch("app.tools.modify.modify_file.write_file")
+@patch("app.tools.modify.modify_file.apply_changes")
 @patch("app.tools.modify.modify_file.read_file")
 @patch("app.tools.modify.modify_file.predict_code")
-def test_modify_file_with_specified_model(mock_predict_code, mock_read_file, mock_write_file):
+def test_modify_file_with_specified_model(mock_predict_code, mock_read_file, mock_apply_changes):
     mock_file_content = "This is the original file content."
     mock_request = "Please add a new line at the end."
     mock_modified_content = "This is the modified file content."
@@ -66,5 +66,5 @@ def test_modify_file_with_specified_model(mock_predict_code, mock_read_file, moc
     mock_read_file.assert_called_once_with("dummy_file_path")
     mock_predict_code.assert_called_once_with(
         ANY, model=mock_model)
-    mock_write_file.assert_called_once_with(
+    mock_apply_changes.assert_called_once_with(
         "dummy_file_path", mock_modified_content)

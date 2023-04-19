@@ -1,4 +1,4 @@
-from app.core.file_utils import read_file, write_file
+from app.core.file_utils import read_file, apply_changes
 from app.core.chat_utils import predict_code
 
 REQUEST_SUFFIX = "Return the full modified file contents. Any non-code text should only be included as inline comments."
@@ -13,4 +13,4 @@ def debug_file(file_path, error_message, model=None):
     prompt = f"Original file contents:\n```\n{file_content}\n```\n\n{request}\n{REQUEST_SUFFIX}"
 
     modified_contents = predict_code(prompt, model=model)
-    write_file(file_path, modified_contents)
+    apply_changes(file_path, modified_contents)

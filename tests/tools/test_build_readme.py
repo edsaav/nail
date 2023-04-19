@@ -11,8 +11,8 @@ TEST_README_CONTENTS = "This is a generated README file."
 
 @patch("app.tools.build.build_readme.build_context_prefix_from_directory")
 @patch("app.tools.build.build_readme.predict")
-@patch("app.tools.build.build_readme.write_file")
-def test_build_readme(mock_write_file, mock_predict, mock_build_context):
+@patch("app.tools.build.build_readme.apply_changes")
+def test_build_readme(mock_apply_changes, mock_predict, mock_build_context):
     # Prepare the test environment
     readme_file_path = os.path.join(TEST_CONTEXT_DIRECTORY, TEST_README_FILE)
 
@@ -31,8 +31,8 @@ def test_build_readme(mock_write_file, mock_predict, mock_build_context):
     mock_predict.assert_called_once_with(
         expected_prompt, system_message_content=README_SYSTEM_MESSAGE, model=None)
 
-    # Check if the write_file function was called with the correct arguments
-    mock_write_file.assert_called_once_with(
+    # Check if the apply_changes function was called with the correct arguments
+    mock_apply_changes.assert_called_once_with(
         readme_file_path, TEST_README_CONTENTS)
 
     # Add a new test where model is specified
@@ -58,6 +58,6 @@ def test_build_readme(mock_write_file, mock_predict, mock_build_context):
         mock_predict_with_model.assert_called_once_with(
             expected_prompt, system_message_content=README_SYSTEM_MESSAGE, model="gpt-4")
 
-        # Check if the write_file function was called with the correct arguments
-        mock_write_file.assert_called_with(
+        # Check if the apply_changes function was called with the correct arguments
+        mock_apply_changes.assert_called_with(
             readme_file_path, TEST_README_CONTENTS)
