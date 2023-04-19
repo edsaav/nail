@@ -61,20 +61,49 @@ def test_open_editor_with_custom_editor(mock_call):
 @patch("app.core.file_utils.read_file")
 @patch("app.core.file_utils.print_colored_diff_line")
 def test_confirm_diff(mock_print_colored_diff_line, mock_read_file, mock_input):
-    # Mock the read_file function to return a fixed content
-    mock_read_file.return_value = "Hello, World!"
+    # Create a temporary file with some content
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        temp_file.write(b"Hello, World!")
+        temp_file_path = temp_file.name
+
+    # Mock the read_file function to return the content of the temporary file
+    mock_read_file.return_value = read_file(temp_file_path)
     # Mock the user input to return 'y' for confirmation
     mock_input.return_value = 'y'
 
     # Test confirm_diff function
-    file_path = "test.txt"
+    new_content = "Hello, New World!"
+    result = confirm_diff(temp_file_path, new_content)
+    assert result == True
+
+    # Assert that print_colored_diff_line is called with the correct diff lines
+    expected_calls = [
+        call('-Hello, World!'),
+        call('+Hello, New World!'),
+    ]
+    mock_print_colored_diff_line.assert_has_calls(
+        expected_calls, any_order=True)
+
+    # Clean up the temporary file
+    os.remove(temp_file_path)
+
+@patch("app.core.file_utils.input")
+@patch("app.core.file_utils.os.path.exists")
+@patch("app.core.file_utils.print_colored_diff_line")
+def test_confirm_diff_no_file(mock_print_colored_diff_line, mock_os_path_exists, mock_input):
+    # Mock the os.path.exists function to return False
+    mock_os_path_exists.return_value = False
+    # Mock the user input to return 'y' for confirmation
+    mock_input.return_value = 'y'
+
+    # Test confirm_diff function when the file does not exist
+    file_path = "non_existent.txt"
     new_content = "Hello, New World!"
     result = confirm_diff(file_path, new_content)
     assert result == True
 
     # Assert that print_colored_diff_line is called with the correct diff lines
     expected_calls = [
-        call('-Hello, World!'),
         call('+Hello, New World!'),
     ]
     mock_print_colored_diff_line.assert_has_calls(

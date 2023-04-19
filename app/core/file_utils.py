@@ -36,7 +36,10 @@ def confirm_diff(file_path, content):
     Takes a file and content string as inputs. It generates a diff comparing the string to the contents of the file.
     It then displays the diff and asks the user to confirm the changes. Returns true if they confirm.
     """
-    file_content = read_file(file_path)
+    if os.path.exists(file_path):
+        file_content = read_file(file_path)
+    else:
+        file_content = ''
     diff = difflib.unified_diff(
         file_content.splitlines(), content.splitlines(), lineterm='')
     for line in diff:
