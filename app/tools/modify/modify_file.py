@@ -1,4 +1,4 @@
-from app.core.file_utils import read_file, write_file
+from app.core.file_utils import read_file, apply_changes
 from app.core.chat_utils import predict_code
 from app.core.context_utils import build_context_prefix
 
@@ -11,4 +11,4 @@ def modify_file(file_path, request, context_file_paths=None, model=None):
     prompt = f"{additional_file_context}{target_file_context}\n\n{request_text}"
 
     modified_contents = predict_code(prompt, model=model)
-    write_file(file_path, modified_contents)
+    apply_changes(file_path, modified_contents)

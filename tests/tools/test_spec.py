@@ -4,9 +4,9 @@ from app.tools.spec.build_spec_file import build_spec_file
 
 
 @patch("app.tools.spec.build_spec_file.predict_code")
-@patch("app.tools.spec.build_spec_file.write_file")
+@patch("app.tools.spec.build_spec_file.apply_changes")
 @patch("app.tools.spec.build_spec_file.read_file")
-def test_build_spec_file(mock_read_file, mock_write_file, mock_predict_code):
+def test_build_spec_file(mock_read_file, mock_apply_changes, mock_predict_code):
     mock_read_file.return_value = "def add(a, b):\n    return a + b"
 
     mock_predict_code.return_value = (
@@ -22,14 +22,14 @@ def test_build_spec_file(mock_read_file, mock_write_file, mock_predict_code):
         "Create a unit test file for the following code, using pytest:\n\n```\ndef add(a, b):\n    return a + b\n```",
         model=None
     )
-    mock_write_file.assert_called_once_with(
+    mock_apply_changes.assert_called_once_with(
         "test_initial_file.py", "def test_add():\n    assert add(1, 2) == 3\n")
 
 
 @patch("app.tools.spec.build_spec_file.predict_code")
-@patch("app.tools.spec.build_spec_file.write_file")
+@patch("app.tools.spec.build_spec_file.apply_changes")
 @patch("app.tools.spec.build_spec_file.read_file")
-def test_build_spec_file_with_model(mock_read_file, mock_write_file, mock_predict_code):
+def test_build_spec_file_with_model(mock_read_file, mock_apply_changes, mock_predict_code):
     mock_read_file.return_value = "def add(a, b):\n    return a + b"
 
     mock_predict_code.return_value = (
@@ -45,7 +45,7 @@ def test_build_spec_file_with_model(mock_read_file, mock_write_file, mock_predic
         "Create a unit test file for the following code, using pytest:\n\n```\ndef add(a, b):\n    return a + b\n```",
         model="gpt-4"
     )
-    mock_write_file.assert_called_once_with(
+    mock_apply_changes.assert_called_once_with(
         "test_initial_file.py", "def test_add():\n    assert add(1, 2) == 3\n")
 
 
