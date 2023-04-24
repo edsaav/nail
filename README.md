@@ -1,4 +1,5 @@
 # Nail
+![nail logo](https://user-images.githubusercontent.com/10245964/233905871-c1947748-a7dc-4514-a01d-2e0c9446cca9.png)
 
 Nail is a command-line tool that leverages OpenAI's chat API to help you build, modify, debug, and generate unit tests for your code. It can also generate a README file for your project based on the existing files in your project directory.
 
