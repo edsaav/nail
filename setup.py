@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='skink',
+    name='nail',
     version='0.1',
     py_modules=['main', 'app'],
     install_requires=[
@@ -10,6 +10,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        skink=main:main
+        nail=main:main
     ''',
 )

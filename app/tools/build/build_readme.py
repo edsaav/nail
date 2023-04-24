@@ -6,7 +6,7 @@ README_SYSTEM_MESSAGE = "You are a README generating assistant."
 README_REQUEST = "Generate a README file for the application."
 # TODO: Make this list configurable
 IGNORE_LIST = ["README.md", "LICENSE", "tests",
-               "test", "specs", "__pycache__", "skink.egg-info"]
+               "test", "specs", "__pycache__", "nail.egg-info"]
 
 
 def build_readme(readme_file_path, model=None):

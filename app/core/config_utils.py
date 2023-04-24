@@ -2,7 +2,7 @@ import os
 import configparser
 from pathlib import Path
 
-CONFIG_FILE = Path.home() / ".skinkrc"
+CONFIG_FILE = Path.home() / ".nailrc"
 
 
 def get_api_key():
