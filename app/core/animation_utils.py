@@ -64,3 +64,4 @@ def display_loader(stop_loading, prefix="Loading...  "):
         sys.stdout.flush()
         time.sleep(0.04)
         sys.stdout.write('\r')
+    sys.stdout.write('\n')
