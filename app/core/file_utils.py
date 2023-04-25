@@ -57,5 +57,7 @@ def apply_changes(file_path, content):
     """
     if confirm_diff(file_path, content):
         write_file(file_path, content)
+        print(f"Changes applied to {file_path}")
         return True
+    print("Discarding changes.")
     return False

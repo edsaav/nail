@@ -1,6 +1,8 @@
 import re
 import openai
+from threading import Event, Thread
 from app.core.config_utils import get_api_key
+from app.core.animation_utils import display_loader
 
 DEFAULT_SYSTEM_MESSAGE = "You are a helpful assistant."
 CODE_SYSTEM_MESSAGE = """You are a code generating assistant.
@@ -31,12 +33,22 @@ def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE, model=DEFAULT
         system_message(system_message_content),
         user_message(prompt)
     ]
+
+    # Start a thread to display the loading animation while the predict function is working
+    stop_loading = Event()
+    loader_thread = Thread(target=loading, args=(stop_loading,))
+    loader_thread.start()
+
     response = openai.ChatCompletion.create(
         model=model,
         messages=messages,
         temperature=DEFAULT_TEMPERATURE,
         max_tokens=DEFAULT_MAX_TOKENS,
     )
+
+    # Stop the loading animation thread once the response is received
+    stop_loading.set()
+    loader_thread.join()
 
     return response.choices[0].message["content"]
 
@@ -63,3 +75,8 @@ def user_message(message):
 
 def system_message(message):
     return {"role": "system", "content": message}
+
+
+def loading(stop_loading):
+    while not stop_loading.is_set():
+        display_loader(stop_loading, "Generating code...  ")
