@@ -22,8 +22,10 @@ SUPPORTED_MODELS = [
 ]
 
 
-def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE, model=DEFAULT_MODEL):
-    if model == None:
+def predict(
+        prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE,
+        model=DEFAULT_MODEL):
+    if model is None:
         model = DEFAULT_MODEL
     if model not in SUPPORTED_MODELS:
         raise ValueError("Unsupported LLM model requested.")
@@ -34,7 +36,8 @@ def predict(prompt, system_message_content=DEFAULT_SYSTEM_MESSAGE, model=DEFAULT
         user_message(prompt)
     ]
 
-    # Start a thread to display the loading animation while the predict function is working
+    # Start a thread to display the loading animation
+    # while the predict function is working
     stop_loading = Event()
     loader_thread = Thread(target=loading, args=(stop_loading,))
     loader_thread.start()
@@ -61,11 +64,12 @@ def predict_code(prompt, model=DEFAULT_MODEL):
 
 
 def extract_code(text):
-    # Regular expression pattern to detect code wrapped with triple backticks and optional language identifier
+    # Regular expression pattern to detect code wrapped with
+    # triple backticks and optional language identifier
     pattern = r"^```(?:\w+)?\n([\s\S]*?)\n```"
     matches = re.findall(pattern, text, re.MULTILINE)
 
-    # Return only the first found match, considering there is only one code block
+    # Return only the first found matching code block
     return matches[0] if matches else ""
 
 

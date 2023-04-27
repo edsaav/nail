@@ -1,8 +1,13 @@
 import os
 import tempfile
-import pytest
 from unittest.mock import patch, call
-from app.core.file_utils import read_file, write_file, open_editor, confirm_diff, apply_changes, print_colored_diff_line
+from app.core.file_utils import (
+    read_file,
+    write_file,
+    open_editor,
+    confirm_diff,
+    apply_changes,
+)
 
 
 def test_read_file():
@@ -74,7 +79,7 @@ def test_confirm_diff(mock_print_colored_diff_line, mock_read_file, mock_input):
     # Test confirm_diff function
     new_content = "Hello, New World!"
     result = confirm_diff(temp_file_path, new_content)
-    assert result == True
+    assert result is True
 
     # Assert that print_colored_diff_line is called with the correct diff lines
     expected_calls = [
@@ -87,10 +92,12 @@ def test_confirm_diff(mock_print_colored_diff_line, mock_read_file, mock_input):
     # Clean up the temporary file
     os.remove(temp_file_path)
 
+
 @patch("app.core.file_utils.input")
 @patch("app.core.file_utils.os.path.exists")
 @patch("app.core.file_utils.print_colored_diff_line")
-def test_confirm_diff_no_file(mock_print_colored_diff_line, mock_os_path_exists, mock_input):
+def test_confirm_diff_no_file(
+        mock_print_colored_diff_line, mock_os_path_exists, mock_input):
     # Mock the os.path.exists function to return False
     mock_os_path_exists.return_value = False
     # Mock the user input to return 'y' for confirmation
@@ -100,7 +107,7 @@ def test_confirm_diff_no_file(mock_print_colored_diff_line, mock_os_path_exists,
     file_path = "non_existent.txt"
     new_content = "Hello, New World!"
     result = confirm_diff(file_path, new_content)
-    assert result == True
+    assert result is True
 
     # Assert that print_colored_diff_line is called with the correct diff lines
     expected_calls = [
@@ -108,6 +115,7 @@ def test_confirm_diff_no_file(mock_print_colored_diff_line, mock_os_path_exists,
     ]
     mock_print_colored_diff_line.assert_has_calls(
         expected_calls, any_order=True)
+
 
 @patch("app.core.file_utils.confirm_diff")
 @patch("app.core.file_utils.write_file")
@@ -119,10 +127,11 @@ def test_apply_changes(mock_write_file, mock_confirm_diff):
     file_path = "test.txt"
     new_content = "Hello, New World!"
     result = apply_changes(file_path, new_content)
-    assert result == True
+    assert result is True
 
     # Assert that write_file is called with the correct arguments
     mock_write_file.assert_called_once_with(file_path, new_content)
+
 
 @patch("app.core.file_utils.confirm_diff")
 @patch("app.core.file_utils.write_file")
@@ -134,7 +143,7 @@ def test_apply_changes_no_confirmation(mock_write_file, mock_confirm_diff):
     file_path = "test.txt"
     new_content = "Hello, New World!"
     result = apply_changes(file_path, new_content)
-    assert result == False
+    assert result is False
 
     # Assert that write_file is not called
     mock_write_file.assert_not_called()

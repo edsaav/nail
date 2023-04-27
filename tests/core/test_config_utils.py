@@ -18,7 +18,7 @@ def test_get_api_key_with_env_var(monkeypatch):
 
 
 def test_get_api_key_with_config_file(monkeypatch, temp_config_file):
-    monkeypatch.delenv("OPENAI_API_KEY")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     config = configparser.ConfigParser()
     config["openai"] = {"api_key": "test_key"}
     with temp_config_file.open("w") as f:
@@ -29,9 +29,9 @@ def test_get_api_key_with_config_file(monkeypatch, temp_config_file):
 
 
 def test_get_api_key_with_no_key(monkeypatch, temp_config_file):
-    monkeypatch.delenv("OPENAI_API_KEY")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     with mock.patch("app.core.config_utils.CONFIG_FILE", temp_config_file):
-        assert get_api_key() == None
+        assert get_api_key() is None
 
 
 def test_save_api_key(tmp_path):

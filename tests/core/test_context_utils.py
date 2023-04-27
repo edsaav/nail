@@ -31,7 +31,9 @@ def test_build_context_prefix_empty_list():
 @patch("app.core.context_utils.format_file_block", return_value=test_file_content)
 def test_build_context_prefix_with_files(mock_format_file_block, mock_read_file):
     context_file_paths = [test_file_path]
-    expected_output = "Existing files for context:\n\nThis is a test file.Given the above context, draft a new file using the following request:\n\n"
+    expected_output = "Existing files for context:\n\nThis is a test file." \
+        + "Given the above context, draft a new file using the " \
+        + "following request:\n\n"
     assert build_context_prefix(context_file_paths) == expected_output
 
 
@@ -47,7 +49,8 @@ def test_list_all_files(mock_os_walk):
 
 @patch("app.core.context_utils.list_all_files")
 @patch("app.core.context_utils.build_context_prefix")
-def test_build_context_prefix_from_directory(mock_build_context_prefix, mock_list_all_files):
+def test_build_context_prefix_from_directory(
+        mock_build_context_prefix, mock_list_all_files):
     # Mock list_all_files to return a single file path
     mock_list_all_files.return_value = [test_file_path]
 
