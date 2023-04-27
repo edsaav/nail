@@ -11,7 +11,7 @@ Nail is a command-line tool that leverages OpenAI's chat API to help you build, 
 To install Nail, you can use pip:
 
 ```
-pip install -e .
+pip install nail
 ```
 
 This will install the required dependencies and make the `nail` command available in your terminal.
@@ -100,6 +100,14 @@ Nail currently supports the following models:
 - gpt-4
 
 You can specify the model to use with the `--model` option for each command.
+
+## Development
+
+To install Nail locally for development, clone the repo, then run this command from within the project directory:
+
+```
+pip install -e .
+```
 
 ## Tests
 
