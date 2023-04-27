@@ -2,7 +2,7 @@ from unittest.mock import patch, ANY
 import pytest
 from click.testing import CliRunner
 
-from main import configure, build, readme, modify, debug, spec, save_api_key
+from main import configure, build, readme, modify, debug, spec
 
 
 @pytest.fixture

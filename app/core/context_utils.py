@@ -2,7 +2,8 @@ from app.core.file_utils import read_file
 import os
 
 CONTEXT_PREFIX = "Existing files for context:\n\n"
-CONTEXT_SUFFIX = "Given the above context, draft a new file using the following request:\n\n"
+CONTEXT_SUFFIX = "Given the above context, draft a new file using " \
+    + "the following request:\n\n"
 
 
 def build_context_prefix(context_file_paths):
@@ -28,16 +29,19 @@ def format_file_label(file_path):
 
 
 def format_file_block(context_file_path, context_content):
-    return f"{format_file_label(context_file_path)}\n```\n{context_content}\n```\n\n"
+    label = format_file_label(context_file_path)
+    formatted_file_content = f"```\n{context_content}\n```"
+    return f"{label}\n{formatted_file_content}\n\n"
 
 
 def list_all_files(path=None, ignore_list=None):
     """
     Recursively list all file paths within the given directory, including files
-    nested within sub-directories, ignoring files or directories with names starting with a period
-    or matching any names in the ignore_list.
+    nested within sub-directories, ignoring files or directories with names
+    starting with a period or matching any names in the ignore_list.
 
-    :param path: Optional path to the directory. If not provided, uses the current path.
+    :param path: Optional path to the directory. If not provided, uses the
+    current path.
     :param ignore_list: Optional list of strings containing names to ignore.
     :return: List of strings containing file paths within the directory.
     """
@@ -64,9 +68,10 @@ def list_all_files(path=None, ignore_list=None):
 
 def build_context_prefix_from_directory(path=None, ignore_list=None):
     """
-    Build the context prefix string based on all the files in the specified (or current) directory.
+    Build the context prefix string based on all the files in the
+    specified (or current) directory.
 
-    :param path: Optional path to the directory. If not provided, uses the current path.
+    :param path: Optional path to directory. If not given, uses current path.
     :param ignore_list: Optional list of strings containing names to ignore.
     :return: context_prefix: String containing the context prefix
     """

@@ -6,7 +6,8 @@ from app.tools.debug.debug_file import debug_file
 from app.tools.spec.build_spec_file import build_spec_file
 from app.core.config_utils import save_api_key
 
-MODEL_HELP = "Optionally specify an LLM model. Currently defaults to gpt-3.5-turbo and supports gpt-4."
+MODEL_HELP = "Optionally specify an LLM model. " \
+    + "Currently defaults to gpt-3.5-turbo and supports gpt-4."
 
 
 @click.group()
@@ -15,7 +16,8 @@ def main():
 
 
 @main.command()
-@click.option("--api_key", prompt=True, hide_input=True, help="Your OpenAI API key.")
+@click.option("--api_key", prompt=True, hide_input=True,
+              help="Your OpenAI API key.")
 def configure(api_key):
     save_api_key(api_key)
     click.echo("API key saved successfully.")
@@ -23,7 +25,8 @@ def configure(api_key):
 
 @main.command()
 @click.argument("file")
-@click.option("--context-files", "-c", multiple=True, type=str, help="Optional list of context file paths.")
+@click.option("--context-files", "-c", multiple=True, type=str,
+              help="Optional list of context file paths.")
 @click.option("--model", "-m", type=str, help=MODEL_HELP)
 def build(file, context_files, model):
     """Build a new file with optional context files."""
@@ -43,8 +46,10 @@ def readme(model):
 
 @main.command()
 @click.argument("file")
-@click.option("--request", "-r", prompt="Requested change", help="The modification that you are requesting.")
-@click.option("--context-files", "-c", multiple=True, type=str, help="Optional list of context file paths.")
+@click.option("--request", "-r", prompt="Requested change",
+              help="The modification that you are requesting.")
+@click.option("--context-files", "-c", multiple=True, type=str,
+              help="Optional list of context file paths.")
 @click.option("--model", "-m", type=str, help=MODEL_HELP)
 def modify(file, request, context_files, model):
     """Modify an existing file."""
@@ -56,7 +61,8 @@ def modify(file, request, context_files, model):
 
 @main.command()
 @click.argument("file")
-@click.option("--error", "-e", default=None, prompt=False, help="Optional error message to debug.")
+@click.option("--error", "-e", default=None, prompt=False,
+              help="Optional error message to debug.")
 @click.option("--model", "-m", type=str, help=MODEL_HELP)
 def debug(file, error, model):
     """Debug an existing file. May include an optional error message"""

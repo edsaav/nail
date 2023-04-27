@@ -62,7 +62,7 @@ def test_predict_with_invalid_model():
     prompt = "What is the meaning of life?"
     model = "invalid_model"
     with pytest.raises(ValueError):
-        response = predict(prompt, model=model)
+        predict(prompt, model=model)
 
 
 def test_predict_code():
@@ -102,11 +102,12 @@ def test_predict_code_with_invalid_model():
     prompt = "Write a Python function that adds two numbers."
     model = "invalid_model"
     with pytest.raises(ValueError):
-        response = predict_code(prompt, model=model)
+        predict_code(prompt, model=model)
 
 
 def test_extract_code():
-    text = "Hello, here is some code:\n```python\nprint('Hello, World!')\n```\nAnd some more text."
+    text = "Hello, here is some code:\n```python\nprint('Hello, World!')" \
+        + "\n```\nAnd some more text."
     result = extract_code(text)
 
     assert result == "print('Hello, World!')"

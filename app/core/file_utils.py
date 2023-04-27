@@ -33,8 +33,9 @@ def print_colored_diff_line(line):
 
 def confirm_diff(file_path, content):
     """
-    Takes a file and content string as inputs. It generates a diff comparing the string to the contents of the file.
-    It then displays the diff and asks the user to confirm the changes. Returns true if they confirm.
+    Takes a file and content string as inputs. It generates a diff comparing
+    the string to the contents of the file. It then displays the diff and asks
+    the user to confirm the changes. Returns true if they confirm.
     """
     if os.path.exists(file_path):
         file_content = read_file(file_path)
@@ -52,8 +53,10 @@ def confirm_diff(file_path, content):
 
 def apply_changes(file_path, content):
     """
-    Takes a file and content string as inputs. It generates a diff comparing the string to the contents of the file.
-    It then displays the diff and asks the user to confirm the changes. If they confirm, it writes the content to the file.
+    Takes a file and content string as inputs. It generates a diff comparing
+    the string to the contents of the file. It then displays the diff and asks
+    the user to confirm the changes. If they confirm, it writes the content
+    to the file.
     """
     if confirm_diff(file_path, content):
         write_file(file_path, content)
