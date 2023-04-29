@@ -4,6 +4,11 @@ import difflib
 from termcolor import colored
 
 
+class MissingFilePathError(ValueError):
+    def __str__(self):
+        return "A file path is required when creating a FileEditor instance."
+
+
 class FileEditor:
     CONFIRMATION_REQUEST = "Do you want to apply the changes? (y/n): "
     CONFIRMATION_CHARACTER = 'y'
@@ -12,7 +17,9 @@ class FileEditor:
 
     DEFAULT_EDITOR = 'vim'
 
-    def __init__(self, file_path):
+    def __init__(self, file_path=None):
+        if file_path is None:
+            raise MissingFilePathError
         self.file_path = file_path
 
     def exists(self):
