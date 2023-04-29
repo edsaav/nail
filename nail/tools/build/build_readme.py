@@ -1,4 +1,4 @@
-from nail.core.file_utils import apply_changes
+from nail.core.file_editor import FileEditor
 from nail.core.chat_utils import predict
 from nail.core.context_utils import build_context_prefix_from_directory
 
@@ -24,4 +24,5 @@ def build_readme(readme_file_path, model=None):
     prompt = f"{context_prefix}{README_REQUEST}"
     readme_contents = predict(
         prompt, system_message_content=README_SYSTEM_MESSAGE, model=model)
-    apply_changes(readme_file_path, readme_contents)
+    file = FileEditor(readme_file_path)
+    file.apply_changes(readme_contents)

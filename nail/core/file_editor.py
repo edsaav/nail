@@ -11,22 +11,19 @@ class FileEditor:
     def __init__(self, file_path):
         self.file_path = file_path
 
-    def read(self):
+    def exists(self):
+        """
+        Returns True if the file exists, False otherwise.
+        """
+        return os.path.exists(self.file_path)
+
+    def content(self):
         """
         Reads the file and returns the content as a string.
         """
         with open(self.file_path, "r") as file:
             content = file.read()
         return content
-
-    def write(self, content):
-        """
-        Takes a content string as input. Writes the content to the file.
-
-        :param content: The content to be written to the file
-        """
-        with open(self.file_path, "w") as file:
-            file.write(content)
 
     def open_editor(self):
         """
@@ -47,11 +44,15 @@ class FileEditor:
         diff = self._calculate_diff(content)
         confirmed = self._get_confirmation(diff)
         if confirmed:
-            self.write_file(content)
+            self._write(content)
             print(f"Changes applied to {self.file_path}")
             return True
         print("Discarding changes.")
         return False
+
+    def _write(self, content):
+        with open(self.file_path, "w") as file:
+            file.write(content)
 
     def _get_confirmation(self, diff):
         self._print_diff(diff)
@@ -61,8 +62,8 @@ class FileEditor:
         return False
 
     def _calculate_diff(self, content):
-        if os.path.exists(self.file_path):
-            file_content = self.read_file()
+        if self.exists():
+            file_content = self.content()
         else:
             file_content = ''
         return difflib.unified_diff(

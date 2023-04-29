@@ -1,4 +1,4 @@
-from nail.core.file_utils import read_file
+from nail.core.file_editor import FileEditor
 import os
 
 CONTEXT_PREFIX = "Existing files for context:\n\n"
@@ -17,7 +17,8 @@ def build_context_prefix(context_file_paths):
     if context_file_paths:
         context_prefix += CONTEXT_PREFIX
         for context_file_path in context_file_paths:
-            context_content = read_file(context_file_path)
+            file = FileEditor(context_file_path)
+            context_content = file.content()
             context_prefix += format_file_block(
                 context_file_path, context_content)
         context_prefix += CONTEXT_SUFFIX
