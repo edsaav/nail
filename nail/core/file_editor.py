@@ -6,6 +6,10 @@ from termcolor import colored
 
 class FileEditor:
     CONFIRMATION_REQUEST = "Do you want to apply the changes? (y/n): "
+    CONFIRMATION_CHARACTER = 'y'
+    CHANGES_APPLIED_TEXT = "Changes applied to: "
+    CHANGES_DISCARDED_TEXT = "Changes discarded."
+
     DEFAULT_EDITOR = 'vim'
 
     def __init__(self, file_path):
@@ -45,9 +49,9 @@ class FileEditor:
         confirmed = self._get_confirmation(diff)
         if confirmed:
             self._write(content)
-            print(f"Changes applied to {self.file_path}")
+            print(f"{self.CHANGES_APPLIED_TEXT}{self.file_path}")
             return True
-        print("Discarding changes.")
+        print(self.CHANGES_DISCARDED_TEXT)
         return False
 
     def _write(self, content):
@@ -56,8 +60,8 @@ class FileEditor:
 
     def _get_confirmation(self, diff):
         self._print_diff(diff)
-        confirm = input(self.CONFIRMATION_REQUEST)
-        if confirm.lower() == 'y':
+        response = input(self.CONFIRMATION_REQUEST)
+        if response.lower() == self.CONFIRMATION_CHARACTER:
             return True
         return False
 
