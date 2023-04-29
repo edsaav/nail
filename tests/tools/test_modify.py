@@ -1,11 +1,11 @@
 from unittest.mock import patch, ANY
-from app.tools.modify.modify_file import modify_file
+from nail.tools.modify.modify_file import modify_file
 
 
-@patch("app.tools.modify.modify_file.apply_changes")
-@patch("app.tools.modify.modify_file.read_file")
-@patch("app.tools.modify.modify_file.predict_code")
-@patch("app.tools.modify.modify_file.build_context_prefix")
+@patch("nail.tools.modify.modify_file.apply_changes")
+@patch("nail.tools.modify.modify_file.read_file")
+@patch("nail.tools.modify.modify_file.predict_code")
+@patch("nail.tools.modify.modify_file.build_context_prefix")
 def test_modify_file_with_optional_context_files(mock_build_context_prefix, mock_predict_code, mock_read_file, mock_apply_changes):
     mock_file_content = "This is the original file content."
     mock_request = "Please add a new line at the end."
@@ -28,9 +28,9 @@ def test_modify_file_with_optional_context_files(mock_build_context_prefix, mock
         "dummy_file_path", mock_modified_content)
 
 
-@patch("app.tools.modify.modify_file.apply_changes")
-@patch("app.tools.modify.modify_file.read_file")
-@patch("app.tools.modify.modify_file.predict_code")
+@patch("nail.tools.modify.modify_file.apply_changes")
+@patch("nail.tools.modify.modify_file.read_file")
+@patch("nail.tools.modify.modify_file.predict_code")
 def test_modify_file_without_context_files(mock_predict_code, mock_read_file, mock_apply_changes):
     mock_file_content = "This is the original file content."
     mock_request = "Please add a new line at the end."
@@ -48,9 +48,9 @@ def test_modify_file_without_context_files(mock_predict_code, mock_read_file, mo
         "dummy_file_path", mock_modified_content)
 
 
-@patch("app.tools.modify.modify_file.apply_changes")
-@patch("app.tools.modify.modify_file.read_file")
-@patch("app.tools.modify.modify_file.predict_code")
+@patch("nail.tools.modify.modify_file.apply_changes")
+@patch("nail.tools.modify.modify_file.read_file")
+@patch("nail.tools.modify.modify_file.predict_code")
 def test_modify_file_with_specified_model(mock_predict_code, mock_read_file, mock_apply_changes):
     mock_file_content = "This is the original file content."
     mock_request = "Please add a new line at the end."

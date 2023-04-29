@@ -1,7 +1,7 @@
 import openai
 import pytest
 from unittest.mock import MagicMock
-from app.core.chat_utils import (
+from nail.core.chat_utils import (
     predict,
     predict_code,
     extract_code,

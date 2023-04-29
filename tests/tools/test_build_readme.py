@@ -1,6 +1,6 @@
 import os
 from unittest.mock import patch
-from app.tools.build.build_readme import build_readme, README_REQUEST, README_SYSTEM_MESSAGE, IGNORE_LIST
+from nail.tools.build.build_readme import build_readme, README_REQUEST, README_SYSTEM_MESSAGE, IGNORE_LIST
 
 # Test data
 TEST_CONTEXT_DIRECTORY = "test_directory"
@@ -9,9 +9,9 @@ TEST_README_FILE = "README.md"
 TEST_README_CONTENTS = "This is a generated README file."
 
 
-@patch("app.tools.build.build_readme.build_context_prefix_from_directory")
-@patch("app.tools.build.build_readme.predict")
-@patch("app.tools.build.build_readme.apply_changes")
+@patch("nail.tools.build.build_readme.build_context_prefix_from_directory")
+@patch("nail.tools.build.build_readme.predict")
+@patch("nail.tools.build.build_readme.apply_changes")
 def test_build_readme(mock_apply_changes, mock_predict, mock_build_context):
     # Prepare the test environment
     readme_file_path = os.path.join(TEST_CONTEXT_DIRECTORY, TEST_README_FILE)
@@ -36,7 +36,7 @@ def test_build_readme(mock_apply_changes, mock_predict, mock_build_context):
         readme_file_path, TEST_README_CONTENTS)
 
     # Add a new test where model is specified
-    @patch("app.tools.build.build_readme.predict")
+    @patch("nail.tools.build.build_readme.predict")
     def test_build_readme_with_model(mock_predict_with_model):
         # Prepare the test environment
         readme_file_path = os.path.join(

@@ -1,29 +1,29 @@
 import pytest
 from unittest.mock import patch
-from app.tools.build.build_file import build_file
+from nail.tools.build.build_file import build_file
 
 
 @pytest.fixture
 def mock_read_file():
-    with patch("app.tools.build.build_file.read_file", autospec=True) as mock:
+    with patch("nail.tools.build.build_file.read_file", autospec=True) as mock:
         yield mock
 
 
 @pytest.fixture
 def mock_apply_changes():
-    with patch("app.tools.build.build_file.apply_changes", autospec=True) as mock:
+    with patch("nail.tools.build.build_file.apply_changes", autospec=True) as mock:
         yield mock
 
 
 @pytest.fixture
 def mock_predict_code():
-    with patch("app.tools.build.build_file.predict_code", autospec=True) as mock:
+    with patch("nail.tools.build.build_file.predict_code", autospec=True) as mock:
         yield mock
 
 
 @pytest.fixture
 def mock_build_context_prefix():
-    with patch("app.tools.build.build_file.build_context_prefix", autospec=True) as mock:
+    with patch("nail.tools.build.build_file.build_context_prefix", autospec=True) as mock:
         yield mock
 
 

@@ -1,4 +1,4 @@
-from app.core.file_utils import read_file
+from nail.core.file_utils import read_file
 import os
 
 CONTEXT_PREFIX = "Existing files for context:\n\n"

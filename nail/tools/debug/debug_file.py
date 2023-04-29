@@ -1,5 +1,5 @@
-from app.core.file_utils import read_file, apply_changes
-from app.core.chat_utils import predict_code
+from nail.core.file_utils import read_file, apply_changes
+from nail.core.chat_utils import predict_code
 
 REQUEST_SUFFIX = "Return the full modified file contents. Any non-code text should only be included as inline comments."
 

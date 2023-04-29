@@ -1,6 +1,6 @@
-from app.core.file_utils import apply_changes
-from app.core.chat_utils import predict
-from app.core.context_utils import build_context_prefix_from_directory
+from nail.core.file_utils import apply_changes
+from nail.core.chat_utils import predict
+from nail.core.context_utils import build_context_prefix_from_directory
 
 README_SYSTEM_MESSAGE = "You are a README generating assistant."
 README_REQUEST = "Generate a README file for the application."

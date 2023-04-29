@@ -1,6 +1,6 @@
-from app.core.file_utils import read_file, apply_changes
-from app.core.chat_utils import predict_code
-from app.core.context_utils import build_context_prefix
+from nail.core.file_utils import read_file, apply_changes
+from nail.core.chat_utils import predict_code
+from nail.core.context_utils import build_context_prefix
 
 
 def modify_file(file_path, request, context_file_paths=None, model=None):

@@ -1,5 +1,5 @@
 from unittest.mock import patch
-from app.core.context_utils import (
+from nail.core.context_utils import (
     build_context_prefix,
     format_file_label,
     format_file_block,
@@ -27,8 +27,8 @@ def test_build_context_prefix_empty_list():
     assert build_context_prefix([]) == ""
 
 
-@patch("app.core.context_utils.read_file", return_value=test_file_content)
-@patch("app.core.context_utils.format_file_block", return_value=test_file_content)
+@patch("nail.core.context_utils.read_file", return_value=test_file_content)
+@patch("nail.core.context_utils.format_file_block", return_value=test_file_content)
 def test_build_context_prefix_with_files(mock_format_file_block, mock_read_file):
     context_file_paths = [test_file_path]
     expected_output = "Existing files for context:\n\nThis is a test file." \
@@ -47,8 +47,8 @@ def test_list_all_files(mock_os_walk):
     assert file_paths[0] == "root/test_file.txt"
 
 
-@patch("app.core.context_utils.list_all_files")
-@patch("app.core.context_utils.build_context_prefix")
+@patch("nail.core.context_utils.list_all_files")
+@patch("nail.core.context_utils.build_context_prefix")
 def test_build_context_prefix_from_directory(
         mock_build_context_prefix, mock_list_all_files):
     # Mock list_all_files to return a single file path
