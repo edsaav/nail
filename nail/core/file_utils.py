@@ -22,35 +22,6 @@ def open_editor(file_path):
     subprocess.call([editor, file_path])
 
 
-def print_colored_diff_line(line):
-    if line.startswith('+'):
-        print(colored(line, 'green'))
-    elif line.startswith('-'):
-        print(colored(line, 'red'))
-    else:
-        print(line)
-
-
-def confirm_diff(file_path, content):
-    """
-    Takes a file and content string as inputs. It generates a diff comparing
-    the string to the contents of the file. It then displays the diff and asks
-    the user to confirm the changes. Returns true if they confirm.
-    """
-    if os.path.exists(file_path):
-        file_content = read_file(file_path)
-    else:
-        file_content = ''
-    diff = difflib.unified_diff(
-        file_content.splitlines(), content.splitlines(), lineterm='')
-    for line in diff:
-        print_colored_diff_line(line)
-    confirm = input(CONFIRMATION_REQUEST)
-    if confirm.lower() == 'y':
-        return True
-    return False
-
-
 def apply_changes(file_path, content):
     """
     Takes a file and content string as inputs. It generates a diff comparing
@@ -58,9 +29,42 @@ def apply_changes(file_path, content):
     the user to confirm the changes. If they confirm, it writes the content
     to the file.
     """
-    if confirm_diff(file_path, content):
+    diff = _calculate_diff(file_path, content)
+    confirmed = _get_confirmation(diff)
+    if confirmed:
         write_file(file_path, content)
         print(f"Changes applied to {file_path}")
         return True
     print("Discarding changes.")
     return False
+
+
+def _get_confirmation(diff):
+    _print_diff(diff)
+    confirm = input(CONFIRMATION_REQUEST)
+    if confirm.lower() == 'y':
+        return True
+    return False
+
+
+def _calculate_diff(file_path, content):
+    if os.path.exists(file_path):
+        file_content = read_file(file_path)
+    else:
+        file_content = ''
+    return difflib.unified_diff(
+        file_content.splitlines(), content.splitlines(), lineterm='')
+
+
+def _print_diff(diff):
+    for line in diff:
+        _print_colored_line(line)
+
+
+def _print_colored_line(line):
+    if line.startswith('+'):
+        print(colored(line, 'green'))
+    elif line.startswith('-'):
+        print(colored(line, 'red'))
+    else:
+        print(line)
