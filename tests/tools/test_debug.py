@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from app.tools.debug.debug_file import debug_file
+from nail.tools.debug.debug_file import debug_file
 
 # Test data
 TEST_FILE_PATH = "test_file.py"
@@ -15,9 +15,9 @@ predict_code_mock = MagicMock(return_value=TEST_MODIFIED_CONTENT)
 
 
 @pytest.mark.parametrize("error_message", [TEST_ERROR_MESSAGE, None])
-@patch("app.tools.debug.debug_file.apply_changes", apply_changes_mock)
-@patch("app.tools.debug.debug_file.read_file", read_file_mock)
-@patch("app.tools.debug.debug_file.predict_code", predict_code_mock)
+@patch("nail.tools.debug.debug_file.apply_changes", apply_changes_mock)
+@patch("nail.tools.debug.debug_file.read_file", read_file_mock)
+@patch("nail.tools.debug.debug_file.predict_code", predict_code_mock)
 def test_debug_file(error_message):
     apply_changes_mock.reset_mock()
     read_file_mock.reset_mock()

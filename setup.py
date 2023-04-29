@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from pathlib import Path
 
 this_directory = Path(__file__).parent
@@ -6,16 +6,17 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='nail',
-    version='0.1.0',
+    version='0.1.3',
     description='A CLI tool for speeding up development using LLMs',
-    py_modules=['main', 'app'],
+    packages=find_packages(),
     install_requires=[
         'click',
-        'openai'
+        'openai',
+        'termcolor',
     ],
     entry_points='''
         [console_scripts]
-        nail=main:main
+        nail=nail.main:main
     ''',
     long_description=long_description,
     long_description_content_type='text/markdown',

@@ -1,8 +1,8 @@
 import os
 
-from app.core.file_utils import read_file, apply_changes, open_editor
-from app.core.chat_utils import predict_code
-from app.core.context_utils import build_context_prefix
+from nail.core.file_utils import read_file, apply_changes, open_editor
+from nail.core.chat_utils import predict_code
+from nail.core.context_utils import build_context_prefix
 
 
 def build_file(file_path, context_file_paths=None, model=None):

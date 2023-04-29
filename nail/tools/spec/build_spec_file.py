@@ -1,5 +1,5 @@
-from app.core.chat_utils import predict_code
-from app.core.file_utils import read_file, apply_changes
+from nail.core.chat_utils import predict_code
+from nail.core.file_utils import read_file, apply_changes
 
 
 def build_spec_file(file_path, target_file_path, model=None):

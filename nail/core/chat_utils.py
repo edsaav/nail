@@ -1,8 +1,8 @@
 import re
 import openai
 from threading import Event, Thread
-from app.core.config_utils import get_api_key
-from app.core.animation_utils import display_loader
+from nail.core.config_utils import get_api_key
+from nail.core.animation_utils import display_loader
 
 DEFAULT_SYSTEM_MESSAGE = "You are a helpful assistant."
 CODE_SYSTEM_MESSAGE = """You are a code generating assistant.

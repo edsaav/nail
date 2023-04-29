@@ -1,7 +1,7 @@
 import os
 import tempfile
 from unittest.mock import patch, call
-from app.core.file_utils import (
+from nail.core.file_utils import (
     read_file,
     write_file,
     open_editor,
@@ -62,9 +62,9 @@ def test_open_editor_with_custom_editor(mock_call):
         os.environ.update(old_environ)
 
 
-@patch("app.core.file_utils.input")
-@patch("app.core.file_utils.read_file")
-@patch("app.core.file_utils.print_colored_diff_line")
+@patch("nail.core.file_utils.input")
+@patch("nail.core.file_utils.read_file")
+@patch("nail.core.file_utils.print_colored_diff_line")
 def test_confirm_diff(mock_print_colored_diff_line, mock_read_file, mock_input):
     # Create a temporary file with some content
     with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -93,9 +93,9 @@ def test_confirm_diff(mock_print_colored_diff_line, mock_read_file, mock_input):
     os.remove(temp_file_path)
 
 
-@patch("app.core.file_utils.input")
-@patch("app.core.file_utils.os.path.exists")
-@patch("app.core.file_utils.print_colored_diff_line")
+@patch("nail.core.file_utils.input")
+@patch("nail.core.file_utils.os.path.exists")
+@patch("nail.core.file_utils.print_colored_diff_line")
 def test_confirm_diff_no_file(
         mock_print_colored_diff_line, mock_os_path_exists, mock_input):
     # Mock the os.path.exists function to return False
@@ -117,8 +117,8 @@ def test_confirm_diff_no_file(
         expected_calls, any_order=True)
 
 
-@patch("app.core.file_utils.confirm_diff")
-@patch("app.core.file_utils.write_file")
+@patch("nail.core.file_utils.confirm_diff")
+@patch("nail.core.file_utils.write_file")
 def test_apply_changes(mock_write_file, mock_confirm_diff):
     # Mock the confirm_diff function to return True
     mock_confirm_diff.return_value = True
@@ -133,8 +133,8 @@ def test_apply_changes(mock_write_file, mock_confirm_diff):
     mock_write_file.assert_called_once_with(file_path, new_content)
 
 
-@patch("app.core.file_utils.confirm_diff")
-@patch("app.core.file_utils.write_file")
+@patch("nail.core.file_utils.confirm_diff")
+@patch("nail.core.file_utils.write_file")
 def test_apply_changes_no_confirmation(mock_write_file, mock_confirm_diff):
     # Mock the confirm_diff function to return False
     mock_confirm_diff.return_value = False
