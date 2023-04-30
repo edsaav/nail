@@ -9,18 +9,20 @@ TEST_ERROR_MESSAGE = "SyntaxError: invalid syntax"
 TEST_MODIFIED_CONTENT = "def test_function():\n    return 43\n"
 
 # Mock functions
-read_file_mock = MagicMock(return_value=TEST_FILE_CONTENT)
-apply_changes_mock = MagicMock()
 predict_code_mock = MagicMock(return_value=TEST_MODIFIED_CONTENT)
 
 
+@pytest.fixture
+def MockFileEditor():
+    with patch("nail.tools.debug.debug_file.FileEditor", autospec=True) as mock:
+        yield mock
+
+
 @pytest.mark.parametrize("error_message", [TEST_ERROR_MESSAGE, None])
-@patch("nail.tools.debug.debug_file.apply_changes", apply_changes_mock)
-@patch("nail.tools.debug.debug_file.read_file", read_file_mock)
 @patch("nail.tools.debug.debug_file.predict_code", predict_code_mock)
-def test_debug_file(error_message):
-    apply_changes_mock.reset_mock()
-    read_file_mock.reset_mock()
+def test_debug_file(error_message, MockFileEditor):
+    mock_file_editor = MockFileEditor()
+    mock_file_editor.content.return_value = TEST_FILE_CONTENT
     predict_code_mock.reset_mock()
 
     expected_request = (
@@ -31,13 +33,14 @@ def test_debug_file(error_message):
     expected_prompt = (
         f"Original file contents:\n```\n{TEST_FILE_CONTENT}\n```\n\n"
         f"{expected_request}\n"
-        "Return the full modified file contents. Any non-code text should only be included as inline comments."
+        "Return the full modified file contents. Any non-code text should "
+        + "only be included as inline comments."
     )
 
     debug_file(TEST_FILE_PATH, error_message)
 
     # Assertions
-    read_file_mock.assert_called_once_with(TEST_FILE_PATH)
+    mock_file_editor.content.assert_called_once()
     predict_code_mock.assert_called_once_with(expected_prompt, model=None)
-    apply_changes_mock.assert_called_once_with(
-        TEST_FILE_PATH, TEST_MODIFIED_CONTENT)
+    mock_file_editor.apply_changes.assert_called_once_with(
+        TEST_MODIFIED_CONTENT)
