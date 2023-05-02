@@ -1,6 +1,6 @@
 import os
 from unittest.mock import patch
-from nail.tools.build.build_readme import build_readme, README_REQUEST, README_SYSTEM_MESSAGE, IGNORE_LIST, FileEditor
+from nail.tools.build.build_readme import build_readme, README_REQUEST, README_SYSTEM_MESSAGE
 
 # Test data
 TEST_CONTEXT_DIRECTORY = "test_directory"
