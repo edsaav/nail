@@ -1,6 +1,6 @@
 import os
 from unittest.mock import patch
-from nail.tools.build.build_readme import build_readme, README_REQUEST, README_SYSTEM_MESSAGE, IGNORE_LIST, FileEditor
+from nail.tools.build.build_readme import build_readme, README_REQUEST, README_SYSTEM_MESSAGE
 
 # Test data
 TEST_CONTEXT_DIRECTORY = "test_directory"
@@ -9,15 +9,16 @@ TEST_README_FILE = "README.md"
 TEST_README_CONTENTS = "This is a generated README file."
 
 
-@patch("nail.tools.build.build_readme.build_context_prefix_from_directory")
 @patch("nail.tools.build.build_readme.predict")
 @patch("nail.tools.build.build_readme.FileEditor")
-def test_build_readme(MockFileEditor, mock_predict, mock_build_context):
+@patch("nail.tools.build.build_readme.ContextCompiler")
+def test_build_readme(MockContextCompiler, MockFileEditor, mock_predict):
     # Prepare the test environment
     readme_file_path = os.path.join(TEST_CONTEXT_DIRECTORY, TEST_README_FILE)
 
     # Set the return values for the mocked functions
-    mock_build_context.return_value = TEST_CONTEXT
+    mock_context_compiler = MockContextCompiler()
+    mock_context_compiler.compile_all_minus_ignored.return_value = TEST_CONTEXT
     mock_predict.return_value = TEST_README_CONTENTS
     mock_file_editor = MockFileEditor()
     mock_file_editor.apply_changes.return_value = True
@@ -27,7 +28,7 @@ def test_build_readme(MockFileEditor, mock_predict, mock_build_context):
 
     # Check if the build_context_prefix_from_directory function was
     # called with the correct arguments
-    mock_build_context.assert_called_once_with(ignore_list=IGNORE_LIST)
+    mock_context_compiler.compile_all_minus_ignored.assert_called_once()
 
     # Check if the predict function was called with the correct arguments
     expected_prompt = f"{TEST_CONTEXT}{README_REQUEST}"
