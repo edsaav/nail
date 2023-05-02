@@ -1,12 +1,9 @@
 from nail.core.file_editor import FileEditor
 from nail.core.chat_utils import predict
-from nail.core.context_utils import build_context_prefix_from_directory
+from nail.core.prompt.context_compiler import ContextCompiler
 
 README_SYSTEM_MESSAGE = "You are a README generating assistant."
 README_REQUEST = "Generate a README file for the application."
-# TODO: Make this list configurable
-IGNORE_LIST = ["README.md", "LICENSE", "tests",
-               "test", "specs", "__pycache__", "nail.egg-info"]
 
 
 def build_readme(readme_file_path, model=None):
@@ -19,8 +16,7 @@ def build_readme(readme_file_path, model=None):
     :param context_directory_path: Optional path to the directory containing the application files.
                                     If not provided, uses the current path.
     """
-    context_prefix = build_context_prefix_from_directory(
-        ignore_list=IGNORE_LIST)
+    context_prefix = ContextCompiler().compile_all_minus_ignored()
     prompt = f"{context_prefix}{README_REQUEST}"
     readme_contents = predict(
         prompt, system_message_content=README_SYSTEM_MESSAGE, model=model)
