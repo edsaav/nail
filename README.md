@@ -42,7 +42,7 @@ This will prompt you to enter your API key, which will be saved for future use.
 
 Nail provides several commands to help you with your code:
 
-### Build 🔨
+### 🔨 Build 🔨
 
 To build a new file with optional context files, use the `build` command:
 
@@ -64,7 +64,7 @@ If the file does not exist, nail will open your default editor to fill in the pr
 
 The `--context-files` (or `-c`) option can be used to pass in one or more additional files that could provide useful reference. For example, you can pass in files containing modules that should be imported and used by the new file that is being built.
 
-### Modify 🔧
+### 🔧 Modify 🔧
 
 To modify an existing file, use the `modify` command:
 
@@ -74,7 +74,7 @@ nail modify <file> [--request <request>] [--context-files <file1> <file2> ...] [
 
 The request should be in the form of a command, such as "Add a new function that..." or "Refactor the existing class to...".
 
-### Debug 🐛
+### 🐛 Debug 🐛
 
 To debug an existing file, use the `debug` command:
 
@@ -84,7 +84,7 @@ nail debug <file> [--error <error_message>] [--model <model>]
 
 If an error message is not passed, this command will simply look for any possible issues in the given file.
 
-### Generate Unit Tests 🧪
+### 🧪 Generate Unit Tests 🧪
 
 To generate a unit test file for an existing file, use the `spec` command:
 
@@ -94,7 +94,7 @@ nail spec <file> <target_path> [--model <model>]
 
 Once they have been generated, test files can be further adjusted with the `modify` command.
 
-### Generate README 📖
+### 📖 Generate README 📖
 
 To generate a README file for your project, use the `readme` command:
 
@@ -111,7 +111,7 @@ Nail currently supports the following models:
 - gpt-3.5-turbo (default)
 - gpt-4
 
-You can specify the model to use with the `--model` option for each command.
+You can specify the model to use with the `--model` (or `-m`) option for each command.
 
 ## Development
 
@@ -120,8 +120,6 @@ To install Nail locally for development, clone the repo, then run this command f
 ```
 pip3 install -e .
 ```
-
-## Tests
 
 Run the test suite using `pytest`.
 
