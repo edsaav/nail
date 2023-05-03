@@ -1,5 +1,5 @@
 from nail.core.file_editor import FileEditor
-from nail.core.chat_utils import predict_code
+from nail.core.chat import Chat
 
 REQUEST_SUFFIX = "Return the full modified file contents. Any non-code text should only be included as inline comments."
 
@@ -13,5 +13,5 @@ def debug_file(file_path, error_message, model=None):
         request = "Fix any bugs in the file."
     prompt = f"Original file contents:\n```\n{file_content}\n```\n\n{request}\n{REQUEST_SUFFIX}"
 
-    modified_contents = predict_code(prompt, model=model)
+    modified_contents = Chat(model).predict_code(prompt)
     file.apply_changes(modified_contents)
