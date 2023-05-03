@@ -1,8 +1,7 @@
 from nail.core.file_editor import FileEditor
-from nail.core.chat_utils import predict
 from nail.core.prompt.context_compiler import ContextCompiler
+from nail.core.chat import Chat
 
-README_SYSTEM_MESSAGE = "You are a README generating assistant."
 README_REQUEST = "Generate a README file for the application."
 
 
@@ -18,7 +17,5 @@ def build_readme(readme_file_path, model=None):
     """
     context_prefix = ContextCompiler().compile_all_minus_ignored()
     prompt = f"{context_prefix}{README_REQUEST}"
-    readme_contents = predict(
-        prompt, system_message_content=README_SYSTEM_MESSAGE, model=model)
-    file = FileEditor(readme_file_path)
-    file.apply_changes(readme_contents)
+    readme_contents = Chat(model).predict(prompt)
+    FileEditor(readme_file_path).apply_changes(readme_contents)

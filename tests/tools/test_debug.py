@@ -18,12 +18,18 @@ def MockFileEditor():
         yield mock
 
 
+@pytest.fixture
+def MockChat():
+    with patch("nail.tools.debug.debug_file.Chat", autospec=True) as mock:
+        yield mock
+
+
 @pytest.mark.parametrize("error_message", [TEST_ERROR_MESSAGE, None])
-@patch("nail.tools.debug.debug_file.predict_code", predict_code_mock)
-def test_debug_file(error_message, MockFileEditor):
-    mock_file_editor = MockFileEditor()
+def test_debug_file(error_message, MockFileEditor, MockChat):
+    mock_file_editor = MockFileEditor.return_value
+    mock_chat = MockChat.return_value
+    mock_chat.predict_code.return_value = TEST_MODIFIED_CONTENT
     mock_file_editor.content.return_value = TEST_FILE_CONTENT
-    predict_code_mock.reset_mock()
 
     expected_request = (
         f"Fix the following error message: {TEST_ERROR_MESSAGE}"
@@ -41,6 +47,6 @@ def test_debug_file(error_message, MockFileEditor):
 
     # Assertions
     mock_file_editor.content.assert_called_once()
-    predict_code_mock.assert_called_once_with(expected_prompt, model=None)
+    mock_chat.predict_code.assert_called_once_with(expected_prompt)
     mock_file_editor.apply_changes.assert_called_once_with(
         TEST_MODIFIED_CONTENT)
