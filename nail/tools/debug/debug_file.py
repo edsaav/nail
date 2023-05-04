@@ -1,17 +1,17 @@
 from nail.core.file_editor import FileEditor
-from nail.core.chat import Chat
+from nail.core.chat import Chat, ModelCodeGenerationError
+from nail.core.prompt.prompt import DebugPrompt
 
-REQUEST_SUFFIX = "Return the full modified file contents. Any non-code text should only be included as inline comments."
+NO_BUGS_MESSAGE = 'No bugs were found in the file.'
 
 
 def debug_file(file_path, error_message, model=None):
     file = FileEditor(file_path)
-    file_content = file.content()
-    if error_message:
-        request = f"Fix the following error message: {error_message}"
-    else:
-        request = "Fix any bugs in the file."
-    prompt = f"Original file contents:\n```\n{file_content}\n```\n\n{request}\n{REQUEST_SUFFIX}"
-
-    modified_contents = Chat(model).predict_code(prompt)
+    prompt = DebugPrompt(file_path, details={
+                         "error_message": error_message}).text()
+    try:
+        modified_contents = Chat(model).predict_code(prompt)
+    except ModelCodeGenerationError:
+        print(NO_BUGS_MESSAGE)
+        return
     file.apply_changes(modified_contents)
