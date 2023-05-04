@@ -1,0 +1,9 @@
+{
+  "prompt_instructions": {
+    "build": "Add custom instructions for the Build command here.",
+    "readme": "Add custom instructions for the Readme command here.",
+    "modify": "Add custom instructions for the Modify command here.",
+    "debug": "Add custom instructions for the Debug command here.",
+    "spec": "Add custom instructions for the Spec command here."
+  }
+}

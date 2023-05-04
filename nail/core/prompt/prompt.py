@@ -3,7 +3,9 @@ from abc import ABC, abstractmethod
 from nail.core.file_editor import FileEditor
 from nail.core.prompt.context_compiler import ContextCompiler
 from nail.core.prompt.formatting_utils import file_block
+from nail.core.config.local_config_utils import load_local_config
 
+BUILD_REQUEST = "Write code to the following specification:"
 ERROR_REQUEST = "Fix the following error message:"
 GENERAL_DEBUG_REQUEST = "Fix any bugs in the file."
 ORIGINAL_FILE_TAG = "Original file contents:"
@@ -37,7 +39,11 @@ class BasePrompt(ABC):
 
     @property
     def _file_text(self):
-        FileEditor(self.file_path).content()
+        return FileEditor(self.file_path).content()
+
+    def _custom_instructions(self, key):
+        instruction = load_local_config().get('prompt_instructions').get(key)
+        return "" if not instruction else f"\n{instruction}"
 
     @abstractmethod
     def text(self):
@@ -46,12 +52,20 @@ class BasePrompt(ABC):
 
 class BuildPrompt(BasePrompt):
     def text(self):
-        return self._context_text + self._file_text
+        print(self._context_text)
+        print(self._file_text)
+        print(self._custom_instructions("build"))
+        return self._context_text \
+            + BUILD_REQUEST \
+            + self._file_text \
+            + self._custom_instructions("build")
 
 
 class BuildReadmePrompt(BasePrompt):
     def text(self):
-        return self._context_text + README_REQUEST
+        return self._context_text \
+            + README_REQUEST \
+            + self._custom_instructions("readme")
 
     @property
     def _context_text(self):
@@ -62,7 +76,8 @@ class DebugPrompt(BasePrompt):
     def text(self):
         return file_block(self.file_path) \
             + f"\n\n{self._debug_request}\n" \
-            + RETURN_FULL_FILE
+            + RETURN_FULL_FILE \
+            + self._custom_instructions("debug")
 
     @property
     def _debug_request(self):
@@ -77,7 +92,10 @@ class ModifyPrompt(BasePrompt):
     def text(self):
         file_context = f"{ORIGINAL_FILE_TAG}\n{file_block(self.file_path)}"
         additional_file_context = self._context_text
-        return additional_file_context + file_context + self._modify_request
+        return additional_file_context \
+            + file_context \
+            + self._modify_request \
+            + self._custom_instructions("modify")
 
     @property
     def _modify_request(self):
@@ -87,4 +105,5 @@ class ModifyPrompt(BasePrompt):
 
 class SpecPrompt(BasePrompt):
     def text(self):
-        return f"{SPEC_PREFIX}\n\n{file_block(self.file_path)}"
+        return f"{SPEC_PREFIX}\n\n{file_block(self.file_path)}" \
+            + self._custom_instructions("spec")
