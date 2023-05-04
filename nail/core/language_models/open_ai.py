@@ -1,6 +1,6 @@
 import openai
 
-from nail.core.config_utils import get_api_key
+from nail.core.config.user_config_utils import get_api_key
 from nail.core.language_models.language_model import LanguageModel
 
 
