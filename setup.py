@@ -13,6 +13,7 @@ setup(
         'click',
         'openai',
         'termcolor',
+        'PyYAML',
     ],
     entry_points='''
         [console_scripts]

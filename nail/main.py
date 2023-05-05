@@ -4,7 +4,7 @@ from nail.tools.build.build_readme import build_readme
 from nail.tools.modify.modify_file import modify_file
 from nail.tools.debug.debug_file import debug_file
 from nail.tools.spec.build_spec_file import build_spec_file
-from nail.core.config_utils import save_api_key
+from nail.core.config.user_config_utils import save_api_key
 
 MODEL_HELP = "Optionally specify an LLM model. " \
     + "Currently defaults to gpt-3.5-turbo and supports gpt-4."

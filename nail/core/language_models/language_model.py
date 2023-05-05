@@ -6,6 +6,7 @@ You obey the following rules:
 - You only respond only in code.
 - You respond only in complete files.
 - Any explanation should be included only as inline comments.
+- Always wrap your code in triple backticks.
 - You do not include usage examples."""
 
 
