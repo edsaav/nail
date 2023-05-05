@@ -1,4 +1,4 @@
 *.egg-info/
 __pycache__/
 dist/
-.nail.json
+.nail.yaml

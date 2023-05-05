@@ -42,7 +42,7 @@ class BasePrompt(ABC):
         return FileEditor(self.file_path).content()
 
     def _custom_instructions(self, key):
-        instruction = load_local_config().get('prompt_instructions').get(key)
+        instruction = load_local_config().get('prompt_instructions', {}).get(key)
         return "" if not instruction else f"\n{instruction}"
 
     @abstractmethod
