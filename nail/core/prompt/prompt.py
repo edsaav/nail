@@ -52,11 +52,8 @@ class BasePrompt(ABC):
 
 class BuildPrompt(BasePrompt):
     def text(self):
-        print(self._context_text)
-        print(self._file_text)
-        print(self._custom_instructions("build"))
         return self._context_text \
-            + BUILD_REQUEST \
+            + f"{BUILD_REQUEST}\n" \
             + self._file_text \
             + self._custom_instructions("build")
 
@@ -75,7 +72,7 @@ class BuildReadmePrompt(BasePrompt):
 class DebugPrompt(BasePrompt):
     def text(self):
         return file_block(self.file_path) \
-            + f"\n\n{self._debug_request}\n" \
+            + f"{self._debug_request}\n" \
             + RETURN_FULL_FILE \
             + self._custom_instructions("debug")
 
@@ -83,7 +80,7 @@ class DebugPrompt(BasePrompt):
     def _debug_request(self):
         error_message = self.details.get("error_message")
         if error_message:
-            return f"{ERROR_REQUEST} {error_message}"
+            return f"{ERROR_REQUEST}\n{error_message}"
         else:
             return GENERAL_DEBUG_REQUEST
 
@@ -105,5 +102,5 @@ class ModifyPrompt(BasePrompt):
 
 class SpecPrompt(BasePrompt):
     def text(self):
-        return f"{SPEC_PREFIX}\n\n{file_block(self.file_path)}" \
+        return f"{SPEC_PREFIX}\n{file_block(self.file_path)}" \
             + self._custom_instructions("spec")
