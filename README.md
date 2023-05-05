@@ -38,7 +38,32 @@ nail configure
 
 This will prompt you to enter your API key, which will be saved for future use.
 
-## Usage
+## Basic Usage
+
+Once you have configured Nail, you can begin using it to generate code. To get started create and navigate to a new project directory. Create a new file and write out what you want the code in that file to do. For example:
+
+```
+# calculator.py
+A python class with addition, subtraction, and multiplication methods
+```
+
+Once you have created and saved your file, run the following command:
+
+```
+nail build calculator.py
+```
+
+After a moment, Nail will generate code meeting that specification and will prompt you to accept or reject the proposed code. If you accept, it will be saved to the file.
+
+What if we want to add to this file? Use the following command to ask Nail to add an additional method.
+
+```
+nail modify calculator.py -r "Add a division method"
+```
+
+Nail will then generate the changes and propose them as a diff that, if accepted, will be saved to the file. Continue reading below to learn about further ways to use Nail to assist in the coding process.
+
+## Usage Details
 
 Nail provides several commands to help you with your code:
 
@@ -103,6 +128,22 @@ nail readme [--model <model>]
 ```
 
 This command will gather all application files into context automatically. It will exclude a number of files irrelevant to a README, such as tests and licenses. Please note, this currently only works for relatively small projects given the limited context window available for GPT.
+
+## Customization
+
+There may be situations in which you want Nail to apply specific additional instructions to the LLM. For example, when using the spec tool, you may wish to specify that tests are always written using a specific library. Or, you may wish to define style guidelines that the build and modify commands should always adhere to. Whatever the case, you can configure each Nail command with additional instructions.
+
+To do this, create a `.nail.yaml` file inside your project's root directory. There is a `.sample.nail.yaml` file inside of this repository showing the appropriate format. For any commands you would like to customize, simply add any desired instructions and they will be appended to requests to the LLM.
+
+For example:
+
+```
+prompt_instructions:
+  spec: Use rspec for all unit tests.
+  build: |
+    Do not include inline comments.
+    Avoid deeply nested conditionals wherever possible.
+```
 
 ## Models
 
