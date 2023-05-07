@@ -74,11 +74,14 @@ def loadable(func, loading_message):
             stop_loading, loading_message,))
         loader_thread.start()
 
-        result = func(*args, **kwargs)
+        try:
+            result = func(*args, **kwargs)
+        except Exception as e:
+            # Stop the loading animation thread if an error occurs
+            _clear_loader(stop_loading, loader_thread, loading_message)
+            raise e
 
-        # Stop the loading animation thread once the response is received
-        stop_loading.set()
-        loader_thread.join()
+        _clear_loader(stop_loading, loader_thread, loading_message)
 
         return result
 
@@ -98,3 +101,15 @@ def _display_loader(stop_loading, prefix=DEFAULT_LOADING_MESSAGE):
         time.sleep(ANIMATION_FRAME_SECONDS)
         sys.stdout.write('\r')
     sys.stdout.write('\n')
+
+
+def _clear_loader(stop_loading, loader_thread, loading_message):
+    # Stop the loading animation thread
+    stop_loading.set()
+
+    # Erase the animation line after the decorated function completes
+    sys.stdout.write(
+        '\r' + ' ' * (len(loading_message) + len(FRAMES[-1])) + '\r')
+    sys.stdout.flush()
+
+    loader_thread.join()
