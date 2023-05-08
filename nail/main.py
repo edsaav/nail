@@ -1,9 +1,9 @@
 import click
-from nail.tools.build.build_file import build_file
-from nail.tools.build.build_readme import build_readme
-from nail.tools.modify.modify_file import modify_file
-from nail.tools.debug.debug_file import debug_file
-from nail.tools.spec.build_spec_file import build_spec_file
+from nail.tools.build_file import build_file
+from nail.tools.build_readme import build_readme
+from nail.tools.modify_file import modify_file
+from nail.tools.debug_file import debug_file
+from nail.tools.build_spec_file import build_spec_file
 from nail.core.config.user_config_utils import save_api_key
 
 MODEL_HELP = (
