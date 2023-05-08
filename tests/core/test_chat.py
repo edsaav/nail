@@ -15,7 +15,8 @@ def test_init_with_default_model():
 def test_init_with_custom_model():
     custom_model_name = "custom_model"
     SUPPORTED_MODELS[custom_model_name] = MagicMock(
-        return_value="custom_model_instance")
+        return_value="custom_model_instance"
+    )
 
     chat = Chat(custom_model_name)
     assert chat.model_name == custom_model_name
@@ -34,7 +35,10 @@ def test_predict():
     chat.model.respond = MagicMock(return_value="response")
     prompt = "test_prompt"
 
-    with patch("nail.core.loading_decorator.loadable", MagicMock(return_value=chat.model.respond)):
+    with patch(
+        "nail.core.loading_decorator.loadable",
+        MagicMock(return_value=chat.model.respond),
+    ):
         response = chat.predict(prompt)
 
     chat.model.respond.assert_called_once_with(prompt)
@@ -46,7 +50,10 @@ def test_predict_code():
     chat.model.respond_with_code = MagicMock(return_value="```\ncode\n```")
     prompt = "test_prompt"
 
-    with patch("nail.core.loading_decorator.loadable", MagicMock(return_value=chat.model.respond_with_code)):
+    with patch(
+        "nail.core.loading_decorator.loadable",
+        MagicMock(return_value=chat.model.respond_with_code),
+    ):
         code = chat.predict_code(prompt)
 
     chat.model.respond_with_code.assert_called_once_with(prompt)
@@ -58,6 +65,9 @@ def test_predict_code_with_invalid_response():
     chat.model.respond_with_code = MagicMock(return_value="no code block")
     prompt = "test_prompt"
 
-    with patch("nail.core.loading_decorator.loadable", MagicMock(return_value=chat.model.respond_with_code)):
+    with patch(
+        "nail.core.loading_decorator.loadable",
+        MagicMock(return_value=chat.model.respond_with_code),
+    ):
         with pytest.raises(ModelCodeGenerationError):
             chat.predict_code(prompt)

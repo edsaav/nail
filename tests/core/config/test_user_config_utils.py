@@ -1,6 +1,10 @@
 import configparser
 import pytest
-from nail.core.config.user_config_utils import get_api_key, save_api_key, USER_CONFIG_FILE
+from nail.core.config.user_config_utils import (
+    get_api_key,
+    save_api_key,
+    USER_CONFIG_FILE,
+)
 
 
 def test_get_api_key_from_env(monkeypatch):

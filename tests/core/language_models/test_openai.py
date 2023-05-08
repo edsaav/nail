@@ -8,7 +8,10 @@ from nail.core.language_models.open_ai import (
     DEFAULT_TEMPERATURE,
 )
 
-from nail.core.language_models.language_model import DEFAULT_SYSTEM_MESSAGE, CODE_SYSTEM_MESSAGE
+from nail.core.language_models.language_model import (
+    DEFAULT_SYSTEM_MESSAGE,
+    CODE_SYSTEM_MESSAGE,
+)
 
 PROMPT = "Create a python class that builds widgets."
 RESPONSE = "This is an answer from OpenAI."
@@ -30,16 +33,14 @@ def MockChatCompletion():
 
 
 def test_gpt_3_5_respond(mock_openai_chat_response, MockChatCompletion):
-    model = GPT_3_5('gpt-3.5-turbo')
+    model = GPT_3_5("gpt-3.5-turbo")
     MockChatCompletion.create.return_value = mock_openai_chat_response
 
     response = model.respond(PROMPT)
 
     MockChatCompletion.create.assert_called_once_with(
-        model='gpt-3.5-turbo',
-        messages=[
-            {"role": "user", "content": f"{DEFAULT_SYSTEM_MESSAGE}\n{PROMPT}"}
-        ],
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": f"{DEFAULT_SYSTEM_MESSAGE}\n{PROMPT}"}],
         temperature=DEFAULT_TEMPERATURE,
         max_tokens=DEFAULT_MAX_TOKENS,
     )
@@ -47,16 +48,14 @@ def test_gpt_3_5_respond(mock_openai_chat_response, MockChatCompletion):
 
 
 def test_gpt_3_5_respond_with_code(mock_openai_chat_response, MockChatCompletion):
-    model = GPT_3_5('gpt-3.5-turbo')
+    model = GPT_3_5("gpt-3.5-turbo")
     MockChatCompletion.create.return_value = mock_openai_chat_response
 
     response = model.respond_with_code(PROMPT)
 
     MockChatCompletion.create.assert_called_once_with(
-        model='gpt-3.5-turbo',
-        messages=[
-            {"role": "user", "content": f"{CODE_SYSTEM_MESSAGE}\n{PROMPT}"}
-        ],
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": f"{CODE_SYSTEM_MESSAGE}\n{PROMPT}"}],
         temperature=DEFAULT_TEMPERATURE,
         max_tokens=DEFAULT_MAX_TOKENS,
     )
@@ -64,7 +63,7 @@ def test_gpt_3_5_respond_with_code(mock_openai_chat_response, MockChatCompletion
 
 
 def test_gpt_3_5_error_response(MockChatCompletion):
-    model = GPT_3_5('gpt-3.5-turbo')
+    model = GPT_3_5("gpt-3.5-turbo")
     MockChatCompletion.create.return_value = MagicMock()
     MockChatCompletion.create.return_value.choices = []
 
@@ -73,16 +72,16 @@ def test_gpt_3_5_error_response(MockChatCompletion):
 
 
 def test_gpt_4_respond(mock_openai_chat_response, MockChatCompletion):
-    model = GPT_4('gpt-4')
+    model = GPT_4("gpt-4")
     MockChatCompletion.create.return_value = mock_openai_chat_response
 
     response = model.respond(PROMPT)
 
     MockChatCompletion.create.assert_called_once_with(
-        model='gpt-4',
+        model="gpt-4",
         messages=[
             {"role": "system", "content": DEFAULT_SYSTEM_MESSAGE},
-            {"role": "user", "content": PROMPT}
+            {"role": "user", "content": PROMPT},
         ],
         temperature=DEFAULT_TEMPERATURE,
         max_tokens=DEFAULT_MAX_TOKENS,
@@ -91,16 +90,16 @@ def test_gpt_4_respond(mock_openai_chat_response, MockChatCompletion):
 
 
 def test_gpt_4_respond_with_code(mock_openai_chat_response, MockChatCompletion):
-    model = GPT_4('gpt-4')
+    model = GPT_4("gpt-4")
     MockChatCompletion.create.return_value = mock_openai_chat_response
 
     response = model.respond_with_code(PROMPT)
 
     MockChatCompletion.create.assert_called_once_with(
-        model='gpt-4',
+        model="gpt-4",
         messages=[
             {"role": "system", "content": CODE_SYSTEM_MESSAGE},
-            {"role": "user", "content": PROMPT}
+            {"role": "user", "content": PROMPT},
         ],
         temperature=DEFAULT_TEMPERATURE,
         max_tokens=DEFAULT_MAX_TOKENS,
@@ -109,7 +108,7 @@ def test_gpt_4_respond_with_code(mock_openai_chat_response, MockChatCompletion):
 
 
 def test_gpt_4_error_response(MockChatCompletion):
-    model = GPT_4('gpt-4')
+    model = GPT_4("gpt-4")
     MockChatCompletion.create.return_value = MagicMock()
     MockChatCompletion.create.return_value.choices = []
 

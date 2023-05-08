@@ -11,8 +11,10 @@ GENERAL_DEBUG_REQUEST = "Fix any bugs in the file."
 ORIGINAL_FILE_TAG = "Original file contents:"
 README_REQUEST = "Generate a README file for the application."
 REQUEST_TAG = "Request:"
-RETURN_FULL_FILE = "Return the full modified file contents. Any non-code" \
+RETURN_FULL_FILE = (
+    "Return the full modified file contents. Any non-code"
     + " text should only be included as inline comments."
+)
 SPEC_PREFIX = "Create a unit test file for the following code:"
 
 
@@ -42,7 +44,7 @@ class BasePrompt(ABC):
         return FileEditor(self.file_path).content()
 
     def _custom_instructions(self, key):
-        instruction = load_local_config().get('prompt_instructions', {}).get(key)
+        instruction = load_local_config().get("prompt_instructions", {}).get(key)
         return "" if not instruction else f"\n{instruction}"
 
     @abstractmethod
@@ -52,17 +54,17 @@ class BasePrompt(ABC):
 
 class BuildPrompt(BasePrompt):
     def text(self):
-        return self._context_text \
-            + f"{BUILD_REQUEST}\n" \
-            + self._file_text \
+        return (
+            self._context_text
+            + f"{BUILD_REQUEST}\n"
+            + self._file_text
             + self._custom_instructions("build")
+        )
 
 
 class BuildReadmePrompt(BasePrompt):
     def text(self):
-        return self._context_text \
-            + README_REQUEST \
-            + self._custom_instructions("readme")
+        return self._context_text + README_REQUEST + self._custom_instructions("readme")
 
     @property
     def _context_text(self):
@@ -71,10 +73,12 @@ class BuildReadmePrompt(BasePrompt):
 
 class DebugPrompt(BasePrompt):
     def text(self):
-        return file_block(self.file_path) \
-            + f"{self._debug_request}\n" \
-            + RETURN_FULL_FILE \
+        return (
+            file_block(self.file_path)
+            + f"{self._debug_request}\n"
+            + RETURN_FULL_FILE
             + self._custom_instructions("debug")
+        )
 
     @property
     def _debug_request(self):
@@ -89,10 +93,12 @@ class ModifyPrompt(BasePrompt):
     def text(self):
         file_context = f"{ORIGINAL_FILE_TAG}\n{file_block(self.file_path)}"
         additional_file_context = self._context_text
-        return additional_file_context \
-            + file_context \
-            + self._modify_request \
+        return (
+            additional_file_context
+            + file_context
+            + self._modify_request
             + self._custom_instructions("modify")
+        )
 
     @property
     def _modify_request(self):
@@ -102,5 +108,7 @@ class ModifyPrompt(BasePrompt):
 
 class SpecPrompt(BasePrompt):
     def text(self):
-        return f"{SPEC_PREFIX}\n{file_block(self.file_path)}" \
+        return (
+            f"{SPEC_PREFIX}\n{file_block(self.file_path)}"
             + self._custom_instructions("spec")
+        )

@@ -65,8 +65,5 @@ class GPT_4(OpenAIChat):
         return {"role": "system", "content": message}
 
     def _respond_from_prompt(self, prompt, system_message):
-        messages = [
-            self._system_message(system_message),
-            self._user_message(prompt)
-        ]
+        messages = [self._system_message(system_message), self._user_message(prompt)]
         return self._parse_response(self._fetch_response(messages))

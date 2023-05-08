@@ -17,12 +17,11 @@ class Chat:
         self._set_llm_model(model_name)
 
     def predict(self, prompt):
-        create_completion = loadable(self.model.respond, 'Loading response...')
+        create_completion = loadable(self.model.respond, "Loading response...")
         return create_completion(prompt)
 
     def predict_code(self, prompt):
-        create_completion = loadable(
-            self.model.respond_with_code, 'Generating code...')
+        create_completion = loadable(self.model.respond_with_code, "Generating code...")
         completion = create_completion(prompt)
         return self._extract_code(completion)
 

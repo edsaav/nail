@@ -13,12 +13,14 @@ class ContextCompiler:
     :param context_file_paths: A list of file paths to include in the context.
     :param ignore_list: A list of file names or regex patterns to ignore.
     """
+
     CONTEXT_PREFIX = "Existing files for context:"
     # TODO: Make this list configurable
     DEFAULT_IGNORE_LIST = ["README", "LICENSE", "^[._]", "^test", "test$"]
 
-    def __init__(self, context_file_paths=[os.getcwd()],
-                 ignore_list=DEFAULT_IGNORE_LIST):
+    def __init__(
+        self, context_file_paths=[os.getcwd()], ignore_list=DEFAULT_IGNORE_LIST
+    ):
         self.context_file_paths = context_file_paths
         self.ignore_list = ignore_list
 
@@ -61,14 +63,15 @@ class ContextCompiler:
             return [path]
         file_paths = []
         for root, dirs, files in os.walk(path):
-            dirs[:] = [d for d in dirs if not d.startswith('.')]
+            dirs[:] = [d for d in dirs if not d.startswith(".")]
             for file in files:
                 file_paths.append(os.path.join(root, file))
         return file_paths
 
     def _filter_ignored(self, file_paths):
-        return [file_path for file_path in file_paths
-                if not self._is_ignored(file_path)]
+        return [
+            file_path for file_path in file_paths if not self._is_ignored(file_path)
+        ]
 
     def _is_ignored(self, file_path):
         # Generate regexes for each item in the ignore list and

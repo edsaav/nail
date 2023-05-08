@@ -30,8 +30,7 @@ def test_build_file(MockFileEditor, MockChat, MockPrompt):
 
     build_file("test_file_path")
 
-    mock_file_editor.apply_changes.assert_called_once_with(
-        "draft_contents")
+    mock_file_editor.apply_changes.assert_called_once_with("draft_contents")
 
 
 @patch("nail.tools.build.build_file.FileEditor", autospec=True)
@@ -42,5 +41,4 @@ def test_build_file_no_file(MockFileEditor, MockChat, MockPrompt):
     build_file("test_file_path", context_file_paths=None)
 
     mock_file_editor.open_editor.assert_called_once()
-    mock_file_editor.apply_changes.assert_called_once_with(
-        "draft_contents")
+    mock_file_editor.apply_changes.assert_called_once_with("draft_contents")

@@ -1,5 +1,6 @@
 # Formatting Utilities
 
+
 def file_block(file_path):
     """
     Returns a formatted code block containing the contents of the file at

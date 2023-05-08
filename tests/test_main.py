@@ -35,8 +35,7 @@ def test_modify(runner):
     with patch("nail.main.modify_file") as mock_modify_file:
         result = runner.invoke(modify, ["test_file", "-r", "test_request"])
         assert result.exit_code == 0
-        mock_modify_file.assert_called_once_with(
-            "test_file", "test_request", ANY, None)
+        mock_modify_file.assert_called_once_with("test_file", "test_request", ANY, None)
 
 
 def test_debug(runner):
@@ -51,4 +50,5 @@ def test_spec(runner):
         result = runner.invoke(spec, ["test_file", "test_target_path"])
         assert result.exit_code == 0
         mock_build_spec_file.assert_called_once_with(
-            "test_file", "test_target_path", None)
+            "test_file", "test_target_path", None
+        )

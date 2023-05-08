@@ -11,11 +11,11 @@ class MissingFilePathError(ValueError):
 
 class FileEditor:
     CONFIRMATION_REQUEST = "Do you want to apply the changes? (y/n): "
-    CONFIRMATION_CHARACTER = 'y'
+    CONFIRMATION_CHARACTER = "y"
     CHANGES_APPLIED_TEXT = "Changes applied to: "
     CHANGES_DISCARDED_TEXT = "Changes discarded."
 
-    DEFAULT_EDITOR = 'vim'
+    DEFAULT_EDITOR = "vim"
 
     def __init__(self, file_path=None):
         if file_path is None:
@@ -40,7 +40,7 @@ class FileEditor:
         """
         Opens the file in the default editor
         """
-        editor = os.environ.get('EDITOR', self.DEFAULT_EDITOR)
+        editor = os.environ.get("EDITOR", self.DEFAULT_EDITOR)
         subprocess.call([editor, self.file_path])
 
     def apply_changes(self, content):
@@ -76,18 +76,19 @@ class FileEditor:
         if self.exists():
             file_content = self.content()
         else:
-            file_content = ''
+            file_content = ""
         return difflib.unified_diff(
-            file_content.splitlines(), content.splitlines(), lineterm='')
+            file_content.splitlines(), content.splitlines(), lineterm=""
+        )
 
     def _print_diff(self, diff):
         for line in diff:
             self._print_colored_line(line)
 
     def _print_colored_line(self, line):
-        if line.startswith('+'):
-            print(colored(line, 'green'))
-        elif line.startswith('-'):
-            print(colored(line, 'red'))
+        if line.startswith("+"):
+            print(colored(line, "green"))
+        elif line.startswith("-"):
+            print(colored(line, "red"))
         else:
             print(line)
