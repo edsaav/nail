@@ -7,6 +7,7 @@ from nail.core.config.local_config_utils import load_local_config
 
 BUILD_REQUEST = "Write code to the following specification:"
 ERROR_REQUEST = "Fix the following error message:"
+EXPLAIN_PREFIX = "Explain the following code:"
 GENERAL_DEBUG_REQUEST = "Fix any bugs in the file."
 ORIGINAL_FILE_TAG = "Original file contents:"
 README_REQUEST = "Generate a README file for the application."
@@ -92,9 +93,8 @@ class DebugPrompt(BasePrompt):
 class ModifyPrompt(BasePrompt):
     def text(self):
         file_context = f"{ORIGINAL_FILE_TAG}\n{file_block(self.file_path)}"
-        additional_file_context = self._context_text
         return (
-            additional_file_context
+            self._context_text
             + file_context
             + self._modify_request
             + self._custom_instructions("modify")
@@ -111,4 +111,13 @@ class SpecPrompt(BasePrompt):
         return (
             f"{SPEC_PREFIX}\n{file_block(self.file_path)}"
             + self._custom_instructions("spec")
+        )
+
+
+class ExplainPrompt(BasePrompt):
+    def text(self):
+        return (
+            self._context_text
+            + f"{EXPLAIN_PREFIX}\n{file_block(self.file_path)}"
+            + self._custom_instructions("explain")
         )
