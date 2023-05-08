@@ -9,4 +9,4 @@ SUPPORTED_MODELS = {
     "gpt-4": GPT_4,
 }
 
-DEFAULT_MODEL = 'gpt-3.5-turbo'
+DEFAULT_MODEL = "gpt-3.5-turbo"

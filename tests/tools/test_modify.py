@@ -27,7 +27,6 @@ def MockChat():
 def test_modify_file(MockModifyPrompt, MockFileEditor, MockChat):
     mock_file_editor = MockFileEditor.return_value
 
-    modify_file('path/to/file', 'request', context_file_paths=None, model=None)
+    modify_file("path/to/file", "request", context_file_paths=None, model=None)
 
-    mock_file_editor.apply_changes.assert_called_once_with(
-        'expected modified content')
+    mock_file_editor.apply_changes.assert_called_once_with("expected modified content")

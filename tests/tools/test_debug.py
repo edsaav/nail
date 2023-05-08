@@ -35,5 +35,4 @@ def test_debug_file(MockFileEditor, MockChat, MockPrompt, error_message):
 
     debug_file("test_file.py", error_message)
 
-    mock_file_editor.apply_changes.assert_called_once_with(
-        TEST_MODIFIED_CONTENT)
+    mock_file_editor.apply_changes.assert_called_once_with(TEST_MODIFIED_CONTENT)

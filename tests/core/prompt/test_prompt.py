@@ -13,7 +13,7 @@ from nail.core.prompt.prompt import (
     RETURN_FULL_FILE,
     ORIGINAL_FILE_TAG,
     REQUEST_TAG,
-    SPEC_PREFIX
+    SPEC_PREFIX,
 )
 
 MOCK_LOCAL_CONFIG = {
@@ -45,7 +45,9 @@ def MockContextCompiler():
     with patch("nail.core.prompt.prompt.ContextCompiler", autospec=True) as mock:
         mock_context = mock.return_value
         mock_context.compile_all.return_value = "context_file_text\n"
-        mock_context.compile_all_minus_ignored.return_value = "partial_context_file_text\n"
+        mock_context.compile_all_minus_ignored.return_value = (
+            "partial_context_file_text\n"
+        )
         yield mock
 
 
@@ -66,27 +68,25 @@ def mock_load_local_config():
 def test_build_prompt_text(MockFileEditor, MockContextCompiler, mock_load_local_config):
     build_prompt = BuildPrompt("file_path", ["context_file_path"])
     expected_text = (
-        f"{CONTEXT_TEXT}\n"
-        f"{BUILD_REQUEST}\n"
-        f"{FILE_TEXT}\n"
-        "build_instructions"
+        f"{CONTEXT_TEXT}\n" f"{BUILD_REQUEST}\n" f"{FILE_TEXT}\n" "build_instructions"
     )
     assert build_prompt.text() == expected_text
 
 
-def test_build_readme_prompt_text(MockFileEditor, MockContextCompiler, mock_load_local_config):
+def test_build_readme_prompt_text(
+    MockFileEditor, MockContextCompiler, mock_load_local_config
+):
     build_readme_prompt = BuildReadmePrompt()
     expected_text = (
-        f"{PARTIAL_CONTEXT_TEXT}\n"
-        f"{README_REQUEST}\n"
-        "readme_instructions"
+        f"{PARTIAL_CONTEXT_TEXT}\n" f"{README_REQUEST}\n" "readme_instructions"
     )
     assert build_readme_prompt.text() == expected_text
 
 
 def test_debug_prompt_text(mock_file_block, mock_load_local_config):
-    debug_prompt = DebugPrompt("file_path", ["context_file_path"], {
-                               "error_message": "error_message"})
+    debug_prompt = DebugPrompt(
+        "file_path", ["context_file_path"], {"error_message": "error_message"}
+    )
     expected_text = (
         f"{FILE_BLOCK}"
         f"{ERROR_REQUEST}\n"
@@ -97,9 +97,12 @@ def test_debug_prompt_text(mock_file_block, mock_load_local_config):
     assert debug_prompt.text() == expected_text
 
 
-def test_modify_prompt_text(MockContextCompiler, mock_load_local_config, mock_file_block):
+def test_modify_prompt_text(
+    MockContextCompiler, mock_load_local_config, mock_file_block
+):
     modify_prompt = ModifyPrompt(
-        "file_path", ["context_file_path"], {"request": "request"})
+        "file_path", ["context_file_path"], {"request": "request"}
+    )
     expected_text = (
         f"{CONTEXT_TEXT}\n"
         f"{ORIGINAL_FILE_TAG}\n"
@@ -113,9 +116,5 @@ def test_modify_prompt_text(MockContextCompiler, mock_load_local_config, mock_fi
 
 def test_spec_prompt_text(mock_load_local_config, mock_file_block):
     spec_prompt = SpecPrompt("file_path")
-    expected_text = (
-        f"{SPEC_PREFIX}\n"
-        f"{FILE_BLOCK}\n"
-        "spec_instructions"
-    )
+    expected_text = f"{SPEC_PREFIX}\n" f"{FILE_BLOCK}\n" "spec_instructions"
     assert spec_prompt.text() == expected_text
