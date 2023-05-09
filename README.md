@@ -119,7 +119,7 @@ nail spec <file> <target_path> [--model <model>]
 
 Once they have been generated, test files can be further adjusted with the `modify` command.
 
-### 🧪 Explain a File 🧪
+### 🧐 Explain a File 🧐
 
 To explain the contents of a file, use the `explain` command:
 
