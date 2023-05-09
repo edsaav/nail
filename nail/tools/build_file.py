@@ -1,5 +1,3 @@
-import os
-
 from nail.core.file_editor import FileEditor
 from nail.core.chat import Chat
 from nail.core.prompt.prompt import BuildPrompt

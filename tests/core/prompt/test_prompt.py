@@ -7,6 +7,7 @@ from nail.core.prompt.prompt import (
     DebugPrompt,
     ModifyPrompt,
     SpecPrompt,
+    ExplainPrompt,
     BUILD_REQUEST,
     README_REQUEST,
     ERROR_REQUEST,
@@ -14,6 +15,8 @@ from nail.core.prompt.prompt import (
     ORIGINAL_FILE_TAG,
     REQUEST_TAG,
     SPEC_PREFIX,
+    EXPLAIN_PREFIX,
+    LOW_VERBOSITY,
 )
 
 MOCK_LOCAL_CONFIG = {
@@ -23,6 +26,7 @@ MOCK_LOCAL_CONFIG = {
         "debug": "debug_instructions",
         "modify": "modify_instructions",
         "spec": "spec_instructions",
+        "explain": "explain_instructions",
     }
 }
 
@@ -118,3 +122,17 @@ def test_spec_prompt_text(mock_load_local_config, mock_file_block):
     spec_prompt = SpecPrompt("file_path")
     expected_text = f"{SPEC_PREFIX}\n" f"{FILE_BLOCK}\n" "spec_instructions"
     assert spec_prompt.text() == expected_text
+
+
+def test_explain_prompt_text(
+    MockContextCompiler, mock_load_local_config, mock_file_block
+):
+    explain_prompt = ExplainPrompt("file_path", ["context_file_path"])
+    expected_text = (
+        f"{CONTEXT_TEXT}\n"
+        f"{EXPLAIN_PREFIX}\n"
+        f"{FILE_BLOCK}"
+        f"{LOW_VERBOSITY}\n"
+        "explain_instructions"
+    )
+    assert explain_prompt.text() == expected_text

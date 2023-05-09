@@ -1,9 +1,10 @@
 import click
-from nail.tools.build.build_file import build_file
-from nail.tools.build.build_readme import build_readme
-from nail.tools.modify.modify_file import modify_file
-from nail.tools.debug.debug_file import debug_file
-from nail.tools.spec.build_spec_file import build_spec_file
+from nail.tools.build_file import build_file
+from nail.tools.build_readme import build_readme
+from nail.tools.modify_file import modify_file
+from nail.tools.debug_file import debug_file
+from nail.tools.build_spec_file import build_spec_file
+from nail.tools.explain_file import explain_file
 from nail.core.config.user_config_utils import save_api_key
 
 MODEL_HELP = (
@@ -97,6 +98,23 @@ def spec(file, target_path, model):
     click.echo(f"Building spec file for: {file}")
     click.echo(f"Target path: {target_path}")
     build_spec_file(file, target_path, model)
+
+
+@main.command()
+@click.argument("file")
+@click.option(
+    "--context-files",
+    "-c",
+    multiple=True,
+    type=str,
+    help="Optional list of context file paths.",
+)
+@click.option("--verbose", "-v", is_flag=True, help="Verbose output.")
+@click.option("--model", "-m", type=str, help=MODEL_HELP)
+def explain(file, context_files, verbose, model):
+    """Explain the contents of a file."""
+    click.echo(f"Explaining: {file}")
+    explain_file(file, context_files, {"verbose": verbose}, model)
 
 
 if __name__ == "__main__":

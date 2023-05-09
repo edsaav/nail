@@ -119,6 +119,16 @@ nail spec <file> <target_path> [--model <model>]
 
 Once they have been generated, test files can be further adjusted with the `modify` command.
 
+### 🧐 Explain a File 🧐
+
+To explain the contents of a file, use the `explain` command:
+
+```
+nail explain <file> [--context-files <file1> <file2> ...] [--verbose] [--model <model>]
+```
+
+Output will be displayed in the console. More detailed explanations will be generated if the `--verbose` (or `-v`) flag is included.
+
 ### 📖 Generate README 📖
 
 To generate a README file for your project, use the `readme` command:
