@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="nail",
-    version="0.1.1",
+    version="0.1.2",
     description="A CLI tool for speeding up development using LLMs",
     packages=find_packages(),
     install_requires=[
