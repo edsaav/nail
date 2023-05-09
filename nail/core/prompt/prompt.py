@@ -17,6 +17,8 @@ RETURN_FULL_FILE = (
     + " text should only be included as inline comments."
 )
 SPEC_PREFIX = "Create a unit test file for the following code:"
+LOW_VERBOSITY = "Keep your answer succinct and to the point."
+HIGH_VERBOSITY = "Include a high level of detail."
 
 
 class BasePrompt(ABC):
@@ -29,7 +31,7 @@ class BasePrompt(ABC):
     :param details: A dictionary of details to be used by specific prompts
     """
 
-    def __init__(self, file_path=None, context_file_paths=None, details=None):
+    def __init__(self, file_path=None, context_file_paths=[], details={}):
         self.file_path = file_path
         self.context_file_paths = context_file_paths
         self.details = details
@@ -116,8 +118,13 @@ class SpecPrompt(BasePrompt):
 
 class ExplainPrompt(BasePrompt):
     def text(self):
+        if self.details.get("verbose") is True:
+            verbosity = HIGH_VERBOSITY
+        else:
+            verbosity = LOW_VERBOSITY
         return (
             self._context_text
             + f"{EXPLAIN_PREFIX}\n{file_block(self.file_path)}"
+            + verbosity
             + self._custom_instructions("explain")
         )

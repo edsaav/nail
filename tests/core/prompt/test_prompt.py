@@ -16,6 +16,7 @@ from nail.core.prompt.prompt import (
     REQUEST_TAG,
     SPEC_PREFIX,
     EXPLAIN_PREFIX,
+    LOW_VERBOSITY,
 )
 
 MOCK_LOCAL_CONFIG = {
@@ -130,7 +131,8 @@ def test_explain_prompt_text(
     expected_text = (
         f"{CONTEXT_TEXT}\n"
         f"{EXPLAIN_PREFIX}\n"
-        f"{FILE_BLOCK}\n"
+        f"{FILE_BLOCK}"
+        f"{LOW_VERBOSITY}\n"
         "explain_instructions"
     )
     assert explain_prompt.text() == expected_text
