@@ -49,6 +49,8 @@ class GPT_3_5(OpenAIChat):
     Future models will be trained to pay stronger attention to system messages."
     """
 
+    model_name = "gpt-3.5-turbo"
+
     def _respond_from_prompt(self, prompt, system_message):
         full_prompt = f"{system_message}\n{prompt}"
         messages = [self._user_message(full_prompt)]
@@ -60,6 +62,8 @@ class GPT_4(OpenAIChat):
     The GPT-4 model makes full use of the concept of system messages, so
     this implementation uses them as intended.
     """
+
+    model_name = "gpt-4"
 
     def _system_message(self, message):
         return {"role": "system", "content": message}

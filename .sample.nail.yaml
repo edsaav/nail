@@ -6,3 +6,4 @@ prompt_instructions:
   debug: Add custom instructions for the Debug command here.
   spec: Add custom instructions for the Spec command here.
   explain: Add custom instructions for the Explain command here.
+default_model: gpt-3.5-turbo

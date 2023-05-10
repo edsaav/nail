@@ -19,9 +19,6 @@ class LanguageModel(ABC):
     take a prompt string as a param and return a string as an answer.
     """
 
-    def __init__(self, model_name: str):
-        self.model_name = model_name
-
     def respond(self, prompt: str) -> str:
         """
         Respond to a prompt with a general instruction message prepended.

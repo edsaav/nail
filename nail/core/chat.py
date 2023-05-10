@@ -2,6 +2,7 @@ import re
 
 from nail.core.loading_decorator import loadable
 from nail.core.language_models.supported_models import SUPPORTED_MODELS, DEFAULT_MODEL
+from nail.core.config.local_config_utils import load_local_config
 
 
 class InvalidModelError(Exception):
@@ -37,8 +38,15 @@ class Chat:
             raise ModelCodeGenerationError(err_msg)
 
     def _set_llm_model(self, model_name):
-        self.model_name = DEFAULT_MODEL if model_name is None else model_name
+        self.model_name = self._default_model if model_name is None else model_name
         try:
-            self.model = SUPPORTED_MODELS[self.model_name](self.model_name)
+            self.model = SUPPORTED_MODELS[self.model_name]()
         except KeyError:
-            raise InvalidModelError(f"Unsupported model: {model_name}")
+            raise InvalidModelError(f"Unsupported model: {self.model_name}")
+
+    @property
+    def _default_model(self):
+        custom_default = load_local_config().get("default_model")
+        if custom_default is not None:
+            return custom_default
+        return DEFAULT_MODEL

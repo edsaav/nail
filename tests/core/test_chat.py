@@ -12,6 +12,15 @@ def test_init_with_default_model():
     assert type(chat.model) == SUPPORTED_MODELS[DEFAULT_MODEL]
 
 
+@patch("nail.core.chat.load_local_config", autospec=True)
+def test_init_with_configured_default_model(mock_load_local_config):
+    custom_default = "gpt-4"
+    mock_load_local_config.return_value = {"default_model": custom_default}
+    chat = Chat()
+    assert chat.model_name == custom_default
+    assert type(chat.model) == SUPPORTED_MODELS[custom_default]
+
+
 def test_init_with_custom_model():
     custom_model_name = "custom_model"
     SUPPORTED_MODELS[custom_model_name] = MagicMock(
