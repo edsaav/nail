@@ -33,7 +33,7 @@ def MockChatCompletion():
 
 
 def test_gpt_3_5_respond(mock_openai_chat_response, MockChatCompletion):
-    model = GPT_3_5("gpt-3.5-turbo")
+    model = GPT_3_5()
     MockChatCompletion.create.return_value = mock_openai_chat_response
 
     response = model.respond(PROMPT)
@@ -48,7 +48,7 @@ def test_gpt_3_5_respond(mock_openai_chat_response, MockChatCompletion):
 
 
 def test_gpt_3_5_respond_with_code(mock_openai_chat_response, MockChatCompletion):
-    model = GPT_3_5("gpt-3.5-turbo")
+    model = GPT_3_5()
     MockChatCompletion.create.return_value = mock_openai_chat_response
 
     response = model.respond_with_code(PROMPT)
@@ -63,7 +63,7 @@ def test_gpt_3_5_respond_with_code(mock_openai_chat_response, MockChatCompletion
 
 
 def test_gpt_3_5_error_response(MockChatCompletion):
-    model = GPT_3_5("gpt-3.5-turbo")
+    model = GPT_3_5()
     MockChatCompletion.create.return_value = MagicMock()
     MockChatCompletion.create.return_value.choices = []
 
@@ -72,7 +72,7 @@ def test_gpt_3_5_error_response(MockChatCompletion):
 
 
 def test_gpt_4_respond(mock_openai_chat_response, MockChatCompletion):
-    model = GPT_4("gpt-4")
+    model = GPT_4()
     MockChatCompletion.create.return_value = mock_openai_chat_response
 
     response = model.respond(PROMPT)
@@ -90,7 +90,7 @@ def test_gpt_4_respond(mock_openai_chat_response, MockChatCompletion):
 
 
 def test_gpt_4_respond_with_code(mock_openai_chat_response, MockChatCompletion):
-    model = GPT_4("gpt-4")
+    model = GPT_4()
     MockChatCompletion.create.return_value = mock_openai_chat_response
 
     response = model.respond_with_code(PROMPT)
@@ -108,7 +108,7 @@ def test_gpt_4_respond_with_code(mock_openai_chat_response, MockChatCompletion):
 
 
 def test_gpt_4_error_response(MockChatCompletion):
-    model = GPT_4("gpt-4")
+    model = GPT_4()
     MockChatCompletion.create.return_value = MagicMock()
     MockChatCompletion.create.return_value.choices = []
 

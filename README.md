@@ -164,6 +164,14 @@ Nail currently supports the following models:
 
 You can specify the model to use with the `--model` (or `-m`) option for each command.
 
+You can also specify a default model in your `.nail.yaml` config file. As an example:
+
+```
+default_model: gpt-4
+prompt_instructions:
+  spec: Use rspec for all unit tests.
+```
+
 ## Development
 
 To install Nail locally for development, clone the repo, then run this command from within the project directory:
